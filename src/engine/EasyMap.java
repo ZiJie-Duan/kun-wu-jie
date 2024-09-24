@@ -1,12 +1,11 @@
+package engine;
 
-import java.lang.Character.Subset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+
 /* Please check my README file .*/
 /*easy Map is a multy type Hash Map */
 public class EasyMap {
-
 
   private Map<String, String> strMap;
   private Map<String, Integer> intMap;
