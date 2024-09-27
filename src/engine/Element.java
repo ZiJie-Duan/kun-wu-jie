@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.List;
 import bagel.Input;
 
 /* Element public{
@@ -9,12 +10,22 @@ import bagel.Input;
   parentElement's spread out (SO) is subElements's spread in (SI)
   subElements's spread in (SI) is parentElement's spread out (SO)
 }*/
-public abstract class Element<SI, SO> {
+public abstract class Element<SI extends Spread, SO extends Spread> {
+  private Class<SI> spreadInClass;
+  private Class<SO> spreadOutClass;
   private Element<?, SI> parentElement;
   private ObjLinkMap<Element<SO, ?>> subElements = new ObjLinkMap<Element<SO, ?>>();
   private ObjLinkMap<Element<SO, ?>> dieList = new ObjLinkMap<Element<SO, ?>>();
-  private Spread spreadIn;
-  private Spread spreadOut;
+  private SI spreadIn = null;
+  private SO spreadOut = null;
+
+  public Class<SI> getSpreadInClass() {
+    return this.spreadInClass;
+  }
+
+  public Class<SO> getSpreadOutClass() {
+    return this.spreadOutClass;
+  }
 
   public void suicide() {
     this.parentElement.addElementToDieList(this);
@@ -53,15 +64,19 @@ public abstract class Element<SI, SO> {
     return (Element<?, SI>) this.parentElement;
   }
 
+  public List<Element<SO, ?>> getSubElementList() {
+    return this.subElements.getObjList();
+  }
+
   public boolean isSubElement(Element<SO, ?> subElement) {
     return this.subElements.isExist(subElement);
   }
 
   public void setSpreadIn(Spread spreadIn) {
-    this.spreadIn = spreadIn;
+    this.spreadIn = (SI) spreadIn;
   }
 
-  public Spread getSpreadOut(Spread spreadOut) {
+  public Spread getSpreadOut() {
     return this.spreadOut;
   }
 
