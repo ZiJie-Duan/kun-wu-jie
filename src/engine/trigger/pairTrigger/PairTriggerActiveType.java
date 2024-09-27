@@ -1,5 +1,5 @@
 
-package engine;
+package engine.trigger.pairTrigger;
 
 /**
  * PairTriggerActiveType

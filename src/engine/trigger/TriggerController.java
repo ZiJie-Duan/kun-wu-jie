@@ -1,6 +1,8 @@
 
 package engine.trigger;
 
+import engine.trigger.pairTrigger.*;
+
 import engine.Element;
 
 /* TriggerController is a core part for all the Trigger in engine
@@ -10,20 +12,23 @@ import engine.Element;
  * Thus this class have High coupling level with Element class */
 public class TriggerController {
 
-  public static boolean triggerWithDifferentBehavior(Element<?, ?> parentElement) {
-    if (parentElement instanceof TriggerBehaviorType) {
-      if (parentElement instanceof TriggerAll || parentElement instanceof TriggerWithSub) {
-        for (Element<?, ?> subElement : parentElement.getSubElementList()) {
-        }
-      } else if (parentElement instanceof TriggerAll || parentElement instanceof TriggerSub) {
-        for (Element<?, ?> subElement : parentElement.getSubElementList()) {
-        }
+  public static void pairTrigger(Element<?, ?> parentElement) {
+    if (parentElement instanceof PairTriggerActiveType) {
+
+      // parent trigger with subElements and subElements trigger with subElements
+      // this behavior aquires parentElement is PairTrigger Type
+      if (parentElement instanceof TriggerAll && parentElement instanceof PairTrigger) {
+      }
+
+      // parent trigger with subElements
+      // this behavior aquires parentElement is PairTrigger Type
+      if (parentElement instanceof TriggerWithSub && parentElement instanceof PairTrigger) {
+      }
+
+      // only sbuElements trigger with subElements
+      // thus parentElement not need to be any PairTrigger
+      if (parentElement instanceof TriggerSub) {
       }
     }
   }
-
-  public static void trigger(Element parentElement) {
-    TriggerController.triggerWithDifferentBehavior(parentElement);
-  }
-
 }

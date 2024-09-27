@@ -1,4 +1,4 @@
-package engine;
+package engine.trigger.pairTrigger;
 
 /**
  * PairTrigger
