@@ -1,6 +1,6 @@
 package engine;
 
-public abstract class Page<SI, SO> extends Element<SI, SO> {
+public abstract class Page<SI extends Spread, SO extends Spread> extends Element<SI, SO> {
 
   private Boundary bd;
 

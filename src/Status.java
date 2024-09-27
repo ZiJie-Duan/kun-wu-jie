@@ -1,6 +1,6 @@
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
+import engine.EasyMap;
+
 /* Please check my README file .*/
 public class Status extends EasyMap {
 
