@@ -6,4 +6,6 @@ package engine.trigger.pairTrigger;
 public interface PairTrigger {
 
   public void pairTriggerActive(Object obj);
+
+  public Class<?> pairTriggerType();
 }

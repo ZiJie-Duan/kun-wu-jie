@@ -1,5 +1,6 @@
 package engine;
 
+import engine.spread.*;
 import java.awt.Image;
 
 public abstract class Sprite<SI extends Spread, SO extends Spread> extends Element<SI, SO> {

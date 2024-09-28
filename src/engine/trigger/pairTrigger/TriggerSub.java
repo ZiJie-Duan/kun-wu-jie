@@ -4,6 +4,6 @@ package engine.trigger.pairTrigger;
 /**
  * TriggerSub
  */
-public interface TriggerSub extends PairTriggerActiveType {
+public interface TriggerSub extends PairTriggerBehaviorType {
 
 }

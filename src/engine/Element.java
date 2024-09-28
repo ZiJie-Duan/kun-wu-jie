@@ -1,5 +1,6 @@
 package engine;
 
+import engine.spread.Spread;
 import java.util.List;
 import bagel.Input;
 
@@ -13,9 +14,9 @@ import bagel.Input;
 public abstract class Element<SI extends Spread, SO extends Spread> {
   private Class<SI> spreadInClass;
   private Class<SO> spreadOutClass;
-  private Element<?, SI> parentElement;
-  private ObjLinkMap<Element<SO, ?>> subElements = new ObjLinkMap<Element<SO, ?>>();
-  private ObjLinkMap<Element<SO, ?>> dieList = new ObjLinkMap<Element<SO, ?>>();
+  private Element<?, ?> parentElement;
+  private ObjLinkMap<Element<?, ?>> subElements = new ObjLinkMap<Element<?, ?>>();
+  private ObjLinkMap<Element<?, ?>> dieList = new ObjLinkMap<Element<?, ?>>();
   private SI spreadIn = null;
   private SO spreadOut = null;
 
@@ -32,43 +33,43 @@ public abstract class Element<SI extends Spread, SO extends Spread> {
   }
 
   public void killSubElements() {
-    for (Element<SO, ?> subElement : dieList.getObjList()) {
+    for (Element<?, ?> subElement : dieList.getObjList()) {
       subElements.remove(subElement);
     }
     dieList.clear();
   }
 
-  public void addElementToDieList(Element<SO, ?> subElement) {
+  public void addElementToDieList(Element<?, ?> subElement) {
     this.dieList.add(subElement);
   }
 
-  public void addParentElement(Element<?, SI> parentElement) {
+  public void addParentElement(Element<?, ?> parentElement) {
     this.parentElement = parentElement;
   }
 
-  public void addSubElement(Element<SO, ?> subElement) {
+  public void addSubElement(Element<?, ?> subElement) {
     subElement.addParentElement(this);
     this.subElements.add(subElement);
   }
 
-  public void addSubElement(String key, Element<SO, ?> subElement) {
+  public void addSubElement(String key, Element<?, ?> subElement) {
     subElement.addParentElement(this);
     this.subElements.add(key, subElement);
   }
 
-  public Element<SO, ?> getSubElement(String key) {
-    return (Element<SO, ?>) this.subElements.get(key);
+  public Element<?, ?> getSubElement(String key) {
+    return (Element<?, ?>) this.subElements.get(key);
   }
 
-  public Element<?, SI> getParentElement() {
-    return (Element<?, SI>) this.parentElement;
+  public Element<?, ?> getParentElement() {
+    return (Element<?, ?>) this.parentElement;
   }
 
-  public List<Element<SO, ?>> getSubElementList() {
+  public List<Element<?, ?>> getSubElementList() {
     return this.subElements.getObjList();
   }
 
-  public boolean isSubElement(Element<SO, ?> subElement) {
+  public boolean isSubElement(Element<?, ?> subElement) {
     return this.subElements.isExist(subElement);
   }
 
@@ -78,6 +79,10 @@ public abstract class Element<SI extends Spread, SO extends Spread> {
 
   public Spread getSpreadOut() {
     return this.spreadOut;
+  }
+
+  public void clearSpreadIn() {
+    this.spreadIn = null;
   }
 
   public abstract void ctrlIn(Input input);
