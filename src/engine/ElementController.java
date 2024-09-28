@@ -1,8 +1,12 @@
 package engine;
 
+import bagel.*;
+import engine.spread.*;
 import java.util.List;
 import java.util.Stack;
 import engine.trigger.*;
+import engine.trigger.pairTrigger.*;
+import java.util.ArrayList;
 
 /* ElementController class 
 * is the Core Class for whole engine.
@@ -10,10 +14,14 @@ import engine.trigger.*;
 */
 public class ElementController {
   Element<?, ?> rootElement;
-  List<Element<?, ?>> elementList; // List of all elements
+  List<Element<?, ?>> elementList = new ArrayList<Element<?, ?>>(); // List of all elements
   // this list engerated in each frame
-  Stack<Element<?, ?>> elementStack; // Stack of all elements
+  Stack<Element<?, ?>> elementStack = new Stack<Element<?, ?>>(); // Stack of all elements
   // used to engerate elementList
+
+  public ElementController(Element<?, ?> rootElement) {
+    this.rootElement = rootElement;
+  }
 
   private void updateElementList() {
     // generate elementList for next behavior
@@ -32,56 +40,63 @@ public class ElementController {
   public void spread() {
     for (Element<?, ?> parentElement : this.elementList) {
       Spread spreadOut = parentElement.getSpreadOut();
-      // if the parentElement's spreadOut is not null
+      // if the parentElement's spreadOut is not SpreadNull
       // and if the subElement's spreadInClass is the same as the parentElement's
       // spreadOut it means they are matched
       // so we need to spread in to the subElement
-      if (spreadOut != null) {
+      if (!(spreadOut instanceof SpreadNull)) {
         for (Element<?, ?> subElement : parentElement.getSubElementList()) {
-          if (subElement.getSpreadInClass().isInstance(spreadOut)) {
+          if (subElement.getSpreadInClass() == parentElement.getSpreadOutClass()) {
             subElement.setSpreadIn(spreadOut);
           }
         }
       }
-      // important note!!!! spreatOut might use a defual type extends from Spread
-      // and might have more acurate target, not sure yet.
     }
   }
 
   public void trigger() {
     for (Element<?, ?> parentElement : this.elementList) {
-      if (parentElement instanceof TriggerBehaviorType) {
-        if (parentElement instanceof TriggerAll || parentElement instanceof TriggerWithSub) {
-          for (Element<?, ?> subElement : parentElement.getSubElementList()) {
-          }
-        }
+      if (parentElement instanceof PairTriggerBehaviorType) {
+        TriggerController.pairTrigger(parentElement);
       }
     }
   }
 
-  public void ctrlIn() {
+  public void ctrlIn(Input input) {
+    for (Element<?, ?> element : this.elementList) {
+      element.ctrlIn(input);
+    }
   }
 
   public void update() {
+    for (Element<?, ?> element : this.elementList) {
+      element.update();
+    }
   }
 
   public void render() {
+    for (Element<?, ?> element : this.elementList) {
+      element.render();
+    }
   }
 
   public void cleanSpread() {
+    for (Element<?, ?> element : this.elementList) {
+      element.clearSpreadIn();
+    }
   }
 
   public void killElement() {
   }
 
-  public void run() {
+  public void runOneFrame(Input input) {
     this.updateElementList();
-    this.killElement();
     this.spread();
     this.trigger();
-    this.ctrlIn();
+    this.ctrlIn(input);
     this.update();
     this.render();
     this.cleanSpread();
+    this.killElement();
   }
 }
