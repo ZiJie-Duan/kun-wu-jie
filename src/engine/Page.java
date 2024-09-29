@@ -9,4 +9,5 @@ public abstract class Page<SI extends Spread, SO extends Spread> extends Element
   public Page(Boundary bd) {
     this.bd = bd;
   }
+  public Page(){bd = null;};
 }

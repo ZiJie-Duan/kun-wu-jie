@@ -12,6 +12,11 @@ public class FormatedText {
   private Font font;
   private String text;
 
+  public FormatedText(String fontpath, int size, String text) {
+    this.font = new Font(fontpath, size);
+    this.text = text;
+  }
+
   public FormatedText(String fontpath, int size, String text, Loc loc) {
     this.font = new Font(fontpath, size);
     this.text = text;
@@ -23,6 +28,14 @@ public class FormatedText {
     this.text = text;
     this.loc = loc;
     this.opt = opt;
+  }
+
+  public void addLoc(Loc loc){
+    this.loc = loc;
+  }
+
+  public int getTextWidth(){
+    return (int)font.getWidth(this.text);
   }
 
   public void draw() {

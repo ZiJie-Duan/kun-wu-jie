@@ -1,48 +1,31 @@
 import bagel.*;
-import java.util.Properties;
+
+import engine.*;
+import engine.spread.SpreadNull;
 
 /**
  * Skeleton Code for SWEN20003 Project 2, Semester 2, 2024
  * Please enter your name below
- * @author
+ *
+ * @author Zijie Duan
  */
-public class ShadowTaxi extends AbstractGame {
+public class ShadowTaxi extends GameCore {
 
-    private final Properties GAME_PROPS;
-    private final Properties MESSAGE_PROPS;
-    private final Image BACKGROUND_IMAGE;
-
-    public ShadowTaxi(Properties gameProps, Properties messageProps) {
-        super(Integer.parseInt(gameProps.getProperty("window.width")),
-                Integer.parseInt(gameProps.getProperty("window.height")),
-                messageProps.getProperty("home.title"));
-
-        this.GAME_PROPS = gameProps;
-        this.MESSAGE_PROPS = messageProps;
-        BACKGROUND_IMAGE = new Image(gameProps.getProperty("backgroundImage.home"));
-    }
-
-    /**
-     * Render the relevant screens and game objects based on the keyboard input
-     * given by the user and the status of the game play.
-     * @param input The current mouse/keyboard input.
-     */
-    @Override
-    protected void update(Input input) {
-
-        if (input.wasPressed(Keys.ESCAPE)){
-            Window.close();
-        }
-
-        // this is given as an example, you may move/delete this line as you wish
-        BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
-
+    public ShadowTaxi(int width, int height, String title) {
+        super(width, height, title, new RootPage());
     }
 
     public static void main(String[] args) {
-        Properties game_props = IOUtils.readPropertiesFile("res/app.properties");
-        Properties message_props = IOUtils.readPropertiesFile("res/message_en.properties");
-        ShadowTaxi game = new ShadowTaxi(game_props, message_props);
+        Status st = Status.getSt();
+        ShadowTaxi game = new ShadowTaxi(
+                st.getInt("window_width"),
+                st.getInt("window_height"),
+                st.messageProps.getProperty("home.title")
+        );
         game.run();
     }
 }
+
+// 子元素生成 加入到树中，由自己生成
+// 子元素换父节点 炮弹发射 后 ？？？
+// 触发器 的子类 包含由不同 角色的信息 来实现不同的激活逻辑
