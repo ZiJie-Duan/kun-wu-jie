@@ -17,8 +17,8 @@ public abstract class Element<SI extends Spread, SO extends Spread> {
   private Element<?, ?> parentElement;
   private ObjLinkMap<Element<?, ?>> subElements = new ObjLinkMap<Element<?, ?>>();
   private ObjLinkMap<Element<?, ?>> dieList = new ObjLinkMap<Element<?, ?>>();
-  private SI spreadIn = null;
-  private SO spreadOut = null;
+  protected SI sI = null; // Spread In
+  protected SO sO = null; // Spread Out
 
   public Class<SI> getSpreadInClass() {
     return this.spreadInClass;
@@ -74,15 +74,15 @@ public abstract class Element<SI extends Spread, SO extends Spread> {
   }
 
   public void setSpreadIn(Spread spreadIn) {
-    this.spreadIn = (SI) spreadIn;
+    this.sI = (SI) spreadIn;
   }
 
   public Spread getSpreadOut() {
-    return this.spreadOut;
+    return this.sO;
   }
 
   public void clearSpreadIn() {
-    this.spreadIn = null;
+    this.sI = null;
   }
 
   public abstract void ctrlIn(Input input);

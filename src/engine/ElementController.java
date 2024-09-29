@@ -13,7 +13,7 @@ import java.util.ArrayList;
 * it used to control all components update and render.
 */
 public class ElementController {
-  Element<?, ?> rootElement;
+  Element<?, ?> rootElement = null;
   List<Element<?, ?>> elementList = new ArrayList<Element<?, ?>>(); // List of all elements
   // this list engerated in each frame
   Stack<Element<?, ?>> elementStack = new Stack<Element<?, ?>>(); // Stack of all elements
@@ -29,6 +29,7 @@ public class ElementController {
     this.elementList.clear();
     this.elementStack.clear();
     this.elementStack.push(this.rootElement);
+    this.elementList.add(this.rootElement);
     while (!this.elementStack.isEmpty()) {
       Element<?, ?> nodeElement = this.elementStack.pop();
       for (Element<?, ?> element : nodeElement.getSubElementList()) {
@@ -87,6 +88,9 @@ public class ElementController {
   }
 
   public void killElement() {
+    for (Element<?, ?> element : this.elementList) {
+      element.killSubElements();
+    }
   }
 
   public void runOneFrame(Input input) {
