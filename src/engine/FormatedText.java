@@ -7,10 +7,10 @@ import bagel.*;
  * */
 public class FormatedText {
 
-  private Loc loc;
-  private DrawOptions opt = null;
-  private Font font;
-  private String text;
+  protected Loc loc;
+  protected DrawOptions opt = null;
+  protected Font font;
+  protected String text;
 
   public FormatedText(String fontpath, int size, String text) {
     this.font = new Font(fontpath, size);

@@ -23,7 +23,6 @@ class RootPage extends Page<SpreadNull, PagesSpread> {
         if (this.sO.pageIndex == 1) {
             this.addSubElement("home_page", new HomePage());
         } else if (this.sO.pageIndex == 2){
-            System.out.println("???");
             this.addSubElement("home_page2", new HomePage2());
         }
     }
