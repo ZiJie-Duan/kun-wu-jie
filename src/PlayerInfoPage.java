@@ -1,22 +1,20 @@
 import bagel.*;
 import engine.Element;
 import engine.spread.SpreadNull;
-import spread.PagesSpread;
+import spread.GamePageSpread;
 import engine.*;
 import dependencies.MiscUtils;
 import dependencies.General;
 
 /* Please check my README file .*/
-public class PlayerInfoPage extends Element<PagesSpread, SpreadNull> {
-  private FormatedText command1;
-  private FormatedText command2;
-  private FormatedText command3;
-  private FormatedImg whiteBox;
-  private IntelligentText userName;
-  private DrawOptions userNameOpt;
-  private String userInput;
+public class PlayerInfoPage extends Element<GamePageSpread, SpreadNull> {
+  private final FormatedText command1;
+  private final FormatedText command2;
+  private final FormatedText command3;
+  private final FormatedImg whiteBox;
+  private final IntelligentText userName;
 
-  public PlayerInfoPage() {
+    public PlayerInfoPage() {
     Status st = Status.getSt();
 
     String lines[] = st.messageProps.getProperty("playerInfo.start").split("\n");
@@ -63,19 +61,17 @@ public class PlayerInfoPage extends Element<PagesSpread, SpreadNull> {
                 st.getInt("window_width")),
             Integer.parseInt(st.gameProps.getProperty("playerInfo.start.y")) + fontsize));
 
-    userNameOpt = new DrawOptions();
+    DrawOptions userNameOpt = new DrawOptions();
     userNameOpt.setBlendColour(0, 0, 0);
-
-    userInput = "";
 
     userName = new IntelligentText(
         st.gameProps.getProperty("font"),
         fontsize,
         "",
         new Loc(
-            0,
+            0, //just any random number, If enable AutoX, it will not use this value anymore.
             Integer.parseInt(st.gameProps.getProperty("playerInfo.playerNameInput.y"))),
-        userNameOpt);
+            userNameOpt);
 
     userName.enable_AutoX(st.getInt("window_width"));
   }
@@ -83,19 +79,20 @@ public class PlayerInfoPage extends Element<PagesSpread, SpreadNull> {
   @Override
   public void ctrlIn(Input input) {
     if (input.wasPressed(Keys.BACKSPACE) || input.wasPressed(Keys.DELETE)) {
-      if (!this.userInput.equals("")) {
-        this.userInput = this.userInput.substring(0, this.userInput.length() - 1);
+      if (!this.sI.playerName.isEmpty()) {
+        this.sI.playerName = this.sI.playerName.substring(0, this.sI.playerName.length() - 1);
       }
     } else {
-      String newstr = MiscUtils.getKeyPress(input);
-      if (newstr != null) {
-        this.userInput += newstr;
+      String newStr = MiscUtils.getKeyPress(input);
+      if (newStr != null) {
+        this.sI.playerName += newStr;
       }
     }
 
     if (input.wasPressed(Keys.ENTER)) {
       this.sI.pageIndex += 1;
       this.sI.pageChange = true;
+      suicide();
     }
   }
 
@@ -109,6 +106,6 @@ public class PlayerInfoPage extends Element<PagesSpread, SpreadNull> {
     command1.draw();
     command2.draw();
     command3.draw();
-    userName.drawWithString(userInput);
+    userName.drawWithString(sI.playerName);
   }
 }

@@ -34,6 +34,7 @@ public class ElementController {
       Element<?, ?> nodeElement = this.elementStack.pop();
       for (Element<?, ?> element : nodeElement.getSubElementList()) {
         this.elementList.add(element);
+        this.elementStack.push(element);
       }
     }
   }
