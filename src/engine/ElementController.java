@@ -37,6 +37,7 @@ public class ElementController {
         this.elementStack.push(element);
       }
     }
+    System.out.println(this.elementList.size());
   }
 
   public void spread() {

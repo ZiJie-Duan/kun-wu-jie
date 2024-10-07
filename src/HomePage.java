@@ -2,9 +2,8 @@ import bagel.*;
 import dependencies.General;
 import engine.*;
 import engine.spread.SpreadNull;
-import spread.GamePageSpread;
 
-public class HomePage extends Page<GamePageSpread, SpreadNull> {
+public class HomePage extends Page<GameMainSpread, SpreadNull> {
 
     private final FormatedText title;
     private final FormatedText instruction;

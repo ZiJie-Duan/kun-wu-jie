@@ -1,11 +1,9 @@
 import bagel.Input;
 import bagel.Keys;
-import bagel.Window;
 import engine.Element;
 import engine.FormatedImg;
 import engine.Loc;
 import engine.spread.SpreadNull;
-import spread.GamePlaySpread;
 
 public class Road extends Element<GamePlaySpread, SpreadNull> {
 

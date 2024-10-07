@@ -3,9 +3,8 @@ import bagel.Input;
 import bagel.Keys;
 import engine.Page;
 import engine.spread.SpreadNull;
-import spread.GamePageSpread;
 
-class RootPage extends Page<SpreadNull, GamePageSpread> {
+class RootPage extends Page<SpreadNull, GameMainSpread> {
 
   private Image BACKGROUND_IMAGE;
   private boolean init = false;
@@ -17,16 +16,19 @@ class RootPage extends Page<SpreadNull, GamePageSpread> {
 
   private void init() {
     BACKGROUND_IMAGE = new Image(st.gameProps.getProperty("backgroundImage.home"));
-    this.sO = new GamePageSpread();
+    this.sO = new GameMainSpread();
   }
 
   private void buildPage() {
     if (this.sO.pageIndex == 1) {
+      this.sO = new GameMainSpread();
       this.addSubElement("home_page", new HomePage());
     } else if (this.sO.pageIndex == 2) {
       this.addSubElement("player_info_page", new PlayerInfoPage());
     } else if (this.sO.pageIndex == 3){
-      this.addSubElement("game_play_page", new GamePage());
+      this.addSubElement("game_play_page", new GamePlayPage());
+    } else if (this.sO.pageIndex == 4){
+      this.addSubElement("game_end_page", new EndPage());
     }
   }
 

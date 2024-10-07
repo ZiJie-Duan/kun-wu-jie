@@ -1,11 +1,7 @@
 import bagel.Input;
-import bagel.Keys;
-import bagel.Window;
 import engine.Element;
-import spread.GamePageSpread;
-import spread.GamePlaySpread;
 
-public class GamePage extends Element<GamePageSpread, GamePlaySpread> {
+public class GamePlayPage extends Element<GameMainSpread, GamePlaySpread> {
 
   private final Status st;
 //
@@ -20,7 +16,7 @@ public class GamePage extends Element<GamePageSpread, GamePlaySpread> {
 //
 //  private final GameElementBuilder gameElementBuilder;
 
-  public GamePage() {
+  public GamePlayPage() {
 //    super(false);
     this.st = Status.getSt();
     this.sO = new GamePlaySpread();
@@ -141,6 +137,13 @@ public class GamePage extends Element<GamePageSpread, GamePlaySpread> {
   @Override
   public void update() {
 
+    sI.runningFrame += 1;
+
+    if (sI.runningFrame > sI.maxFrame){
+      this.sI.pageIndex += 1;
+      this.sI.pageChange = true;
+      suicide();
+    }
   }
 
   @Override
