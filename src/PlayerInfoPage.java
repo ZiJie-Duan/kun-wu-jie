@@ -1,13 +1,12 @@
 import bagel.*;
 import engine.Element;
 import engine.spread.SpreadNull;
-import spread.GamePageSpread;
 import engine.*;
 import dependencies.MiscUtils;
 import dependencies.General;
 
 /* Please check my README file .*/
-public class PlayerInfoPage extends Element<GamePageSpread, SpreadNull> {
+public class PlayerInfoPage extends Element<GameMainSpread, SpreadNull> {
   private final FormatedText command1;
   private final FormatedText command2;
   private final FormatedText command3;

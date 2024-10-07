@@ -1,4 +1,3 @@
-package spread;
 import engine.spread.Spread;
 
 public class GamePlaySpread implements Spread {
