@@ -33,8 +33,8 @@ public class EndPage extends Element<GameMainSpread, SpreadNull> {
             }
             biggestScore[i][0] = gameScore[biggest_index][0];
             biggestScore[i][1] = gameScore[biggest_index][1];
-            gameScore[biggest_index][1] = "-1";
-            scoreNum++;
+            gameScore[biggest_index][1] = "-1"; // here use reference of the gameScore from ST, so it will influnce the original value
+            this.scoreNum++;
         }
         return biggestScore;
     }

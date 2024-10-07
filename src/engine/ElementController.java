@@ -3,10 +3,12 @@ package engine;
 import bagel.*;
 import engine.spread.*;
 import java.util.List;
-import java.util.Stack;
+
 import engine.trigger.*;
 import engine.trigger.pairTrigger.*;
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.LinkedList;
 
 /* ElementController class 
 * is the Core Class for whole engine.
@@ -16,8 +18,8 @@ public class ElementController {
   Element<?, ?> rootElement = null;
   List<Element<?, ?>> elementList = new ArrayList<Element<?, ?>>(); // List of all elements
   // this list engerated in each frame
-  Stack<Element<?, ?>> elementStack = new Stack<Element<?, ?>>(); // Stack of all elements
   // used to engerate elementList
+  Queue<Element<?, ?>> elementQueue = new LinkedList<Element<?, ?>>();
 
   public ElementController(Element<?, ?> rootElement) {
     this.rootElement = rootElement;
@@ -27,17 +29,17 @@ public class ElementController {
     // generate elementList for next behavior
     // brath first spread, thus spread allow to spread deeper
     this.elementList.clear();
-    this.elementStack.clear();
-    this.elementStack.push(this.rootElement);
+    this.elementQueue.clear();
+    this.elementQueue.offer(this.rootElement);
     this.elementList.add(this.rootElement);
-    while (!this.elementStack.isEmpty()) {
-      Element<?, ?> nodeElement = this.elementStack.pop();
+    while (!this.elementQueue.isEmpty()) {
+      Element<?, ?> nodeElement = this.elementQueue.poll();
       for (Element<?, ?> element : nodeElement.getSubElementList()) {
         this.elementList.add(element);
-        this.elementStack.push(element);
+        this.elementQueue.offer(element);
       }
     }
-    System.out.println(this.elementList.size());
+    //System.out.println(this.elementList.size());
   }
 
   public void spread() {
