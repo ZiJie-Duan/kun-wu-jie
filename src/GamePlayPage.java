@@ -3,7 +3,7 @@ import engine.Element;
 
 public class GamePlayPage extends Element<GameMainSpread, GamePlaySpread> {
 
-  private final Status st;
+  private final Status st = Status.getSt();
 //
 //  private final FormatedText textPay;
 //  private final FormatedText textTarget;
@@ -18,7 +18,6 @@ public class GamePlayPage extends Element<GameMainSpread, GamePlaySpread> {
 
   public GamePlayPage() {
 //    super(false);
-    this.st = Status.getSt();
     this.sO = new GamePlaySpread();
 
     this.addSubElement(

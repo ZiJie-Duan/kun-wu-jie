@@ -1,3 +1,4 @@
+import engine.GameCore;
 import engine.spread.*;
 
 public class GameMainSpread implements Spread {
@@ -13,4 +14,12 @@ public class GameMainSpread implements Spread {
     public double targetScore = Double.parseDouble(Status.getSt().gameProps.getProperty("gamePlay.target")); // just for test
     public int maxFrame = Integer.parseInt(Status.getSt().gameProps.getProperty("gamePlay.maxFrames"));
     public int runningFrame = 0;
+
+    public GameMainSpread(){
+
+    }
+
+    public GameMainSpread(boolean pageChange){
+        this.pageChange = pageChange;
+    }
 }
