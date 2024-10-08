@@ -13,7 +13,8 @@ public class PlayerInfoPage extends Element<GameMainSpread, SpreadNull> {
   private final FormatedImg whiteBox;
   private final IntelligentText userName;
 
-    public PlayerInfoPage() {
+  public PlayerInfoPage() {
+    super(GameMainSpread.class, SpreadNull.class);
     Status st = Status.getSt();
 
     String lines[] = st.messageProps.getProperty("playerInfo.start").split("\n");
@@ -68,9 +69,9 @@ public class PlayerInfoPage extends Element<GameMainSpread, SpreadNull> {
         fontsize,
         "",
         new Loc(
-            0, //just any random number, If enable AutoX, it will not use this value anymore.
+            0, // just any random number, If enable AutoX, it will not use this value anymore.
             Integer.parseInt(st.gameProps.getProperty("playerInfo.playerNameInput.y"))),
-            userNameOpt);
+        userNameOpt);
 
     userName.enable_AutoX(st.getInt("window_width"));
   }

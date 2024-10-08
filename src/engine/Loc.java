@@ -58,4 +58,12 @@ public class Loc {
     return Math.sqrt(Math.pow(this.x - loc.getX(), 2) + Math.pow(this.y - loc.getY(), 2));
   }
 
+  public double distanceWith(int x, int y) {
+    return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
+  }
+
+  public Loc clone() {
+    return new Loc(this.x, this.y);
+  }
+
 }
