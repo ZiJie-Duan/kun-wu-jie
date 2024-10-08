@@ -14,7 +14,7 @@ public class Status extends EasyMap {
   public String[][] gameScore;
 
   private void initSelf(Properties gameProps, Properties messageProps,
-                    String[][] gamePlayObjs, String[][] gameScore){
+      String[][] gamePlayObjs, String[][] gameScore) {
     super.init();
     this.gameProps = gameProps;
     this.messageProps = messageProps;
@@ -33,18 +33,18 @@ public class Status extends EasyMap {
   }
 
   @Override
-  public void init(){
+  public void init() {
     this.initSelf(
-            IOUtils.readPropertiesFile("res/app.properties"),
-            IOUtils.readPropertiesFile("res/message_en.properties"),
-            IOUtils
-                    .readCommaSeparatedFile(
-                            IOUtils.readPropertiesFile("res/app.properties")
-                                    .getProperty("gamePlay.objectsFile")),
-            IOUtils
-                    .readCommaSeparatedFile(
-                            IOUtils.readPropertiesFile("res/app.properties")
-                                    .getProperty("gameEnd.scoresFile")));
+        IOUtils.readPropertiesFile("res/app.properties"),
+        IOUtils.readPropertiesFile("res/message_en.properties"),
+        IOUtils
+            .readCommaSeparatedFile(
+                IOUtils.readPropertiesFile("res/app.properties")
+                    .getProperty("gamePlay.objectsFile")),
+        IOUtils
+            .readCommaSeparatedFile(
+                IOUtils.readPropertiesFile("res/app.properties")
+                    .getProperty("gameEnd.scoresFile")));
   }
 
   public static Status getSt() {

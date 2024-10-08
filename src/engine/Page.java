@@ -6,8 +6,14 @@ public abstract class Page<SI extends Spread, SO extends Spread> extends Element
 
   private Boundary bd;
 
-  public Page(Boundary bd) {
+  public Page(Class<SI> sIClass, Class<SO> sOClass, Boundary bd) {
+    super(sIClass, sOClass);
     this.bd = bd;
   }
-  public Page(){bd = null;};
+
+  public Page(Class<SI> sIClass, Class<SO> sOClass) {
+    super(sIClass, sOClass);
+    this.bd = null;
+  }
+
 }

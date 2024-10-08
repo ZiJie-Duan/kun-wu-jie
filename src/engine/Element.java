@@ -20,6 +20,12 @@ public abstract class Element<SI extends Spread, SO extends Spread> {
   protected SI sI = null; // Spread In
   protected SO sO = null; // Spread Out
 
+  // Constructor
+  public Element(Class<SI> spreadInClass, Class<SO> spreadOutClass) {
+    this.spreadInClass = spreadInClass;
+    this.spreadOutClass = spreadOutClass;
+  }
+
   public Class<SI> getSpreadInClass() {
     return this.spreadInClass;
   }

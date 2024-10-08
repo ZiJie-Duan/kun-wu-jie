@@ -39,7 +39,7 @@ public class ElementController {
         this.elementQueue.offer(element);
       }
     }
-    //System.out.println(this.elementList.size());
+    // System.out.println(this.elementList.size());
   }
 
   public void spread() {
