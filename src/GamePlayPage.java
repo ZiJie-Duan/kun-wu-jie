@@ -1,5 +1,6 @@
 import bagel.Image;
 import bagel.Input;
+import bagel.Keys;
 import engine.Boundary;
 import engine.Element;
 import engine.Loc;
@@ -10,6 +11,7 @@ public class GamePlayPage
     implements TriggerSub {
 
   private final Status st = Status.getSt();
+  private GameElementBuilder geBuilder;
   //
   // private final FormatedText textPay;
   // private final FormatedText textTarget;
@@ -26,6 +28,8 @@ public class GamePlayPage
     super(GameMainSpread.class, GamePlaySpread.class);
     this.sO = new GamePlaySpread();
 
+    geBuilder = new GameElementBuilder(this);
+
     this.addSubElement(
         "road",
         new Road());
@@ -35,6 +39,10 @@ public class GamePlayPage
     this.addSubElement(
         "fireball",
         new Fireball(150, 500));
+
+    this.addSubElement(new Blood(300,300));
+    this.addSubElement(new Fire(350,350));
+    this.addSubElement(new Smoke(400,400));
     // this.gameElementBuilder = new GameElementBuilder(this);
     //
     // int gameInfoSize =
@@ -146,18 +154,30 @@ public class GamePlayPage
 
   @Override
   public void ctrlIn(Input input) {
+    if (input.isDown(Keys.UP)){
+      sO.driveDistance += sO.taxiSpeed;
+    }
   }
 
   @Override
   public void update() {
+    sO.runningFrame += 1;
 
-    sI.runningFrame += 1;
-
-    if (sI.runningFrame > sI.maxFrame) {
+    if (sO.runningFrame > sO.maxFrame) {
       this.sI.pageIndex += 1;
       this.sI.pageChange = true;
       suicide();
     }
+
+    this.geBuilder.buildInRange(sO.driveDistance);
+    if (this.geBuilder.isRainning(sO.runningFrame)){
+      this.sO.isRaining = true;
+    } else {
+      this.sO.isRaining = false;
+    }
+
+    // syn player score
+    this.sI.playerScore = this.sO.playerScore;
   }
 
   @Override
