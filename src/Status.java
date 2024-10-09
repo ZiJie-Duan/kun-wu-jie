@@ -11,14 +11,16 @@ public class Status extends EasyMap {
   public Properties gameProps;
   public Properties messageProps;
   public String[][] gamePlayObjs;
+  public String[][] gameWeather;
   public String[][] gameScore;
 
   private void initSelf(Properties gameProps, Properties messageProps,
-      String[][] gamePlayObjs, String[][] gameScore) {
+      String[][] gamePlayObjs, String[][] gamePlayWeather, String[][] gameScore) {
     super.init();
     this.gameProps = gameProps;
     this.messageProps = messageProps;
     this.gamePlayObjs = gamePlayObjs;
+    this.gameWeather = gamePlayWeather;
     this.gameScore = gameScore;
 
     this.set("x_mid", (int) (Integer.parseInt(this.gameProps.getProperty("window.width")) / 2));
@@ -26,6 +28,7 @@ public class Status extends EasyMap {
     this.set("font", (String) this.gameProps.getProperty("font"));
     this.set("window_width", (int) Integer.parseInt(this.gameProps.getProperty("window.width")));
     this.set("window_height", (int) Integer.parseInt(this.gameProps.getProperty("window.height")));
+
   }
 
   private Status() {
@@ -42,9 +45,14 @@ public class Status extends EasyMap {
                 IOUtils.readPropertiesFile("res/app.properties")
                     .getProperty("gamePlay.objectsFile")),
         IOUtils
+                .readCommaSeparatedFile(
+                        IOUtils.readPropertiesFile("res/app.properties")
+                                .getProperty("gamePlay.weatherFile")),
+        IOUtils
             .readCommaSeparatedFile(
                 IOUtils.readPropertiesFile("res/app.properties")
                     .getProperty("gameEnd.scoresFile")));
+
   }
 
   public static Status getSt() {

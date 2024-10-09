@@ -17,7 +17,6 @@ public class Taxi extends Car {
   public void pairTriggerActive(Object obj) {
     if (obj instanceof Fireball) {
       if (this.loc.distanceWith(((Fireball) obj).getLocClone()) < 20) {
-        System.out.println("Taxi hit by fireball");
         this.health -= 20;
       }
     }
