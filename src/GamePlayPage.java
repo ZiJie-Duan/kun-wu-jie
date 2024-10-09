@@ -1,13 +1,12 @@
-import bagel.Image;
 import bagel.Input;
 import bagel.Keys;
 import engine.Boundary;
-import engine.Element;
 import engine.Loc;
+import engine.Page;
 import engine.trigger.pairTrigger.*;
 
 public class GamePlayPage
-    extends Element<GameMainSpread, GamePlaySpread>
+    extends Page<GameMainSpread, GamePlaySpread>
     implements TriggerSub {
 
   private final Status st = Status.getSt();
@@ -25,7 +24,12 @@ public class GamePlayPage
   // private final GameElementBuilder gameElementBuilder;
 
   public GamePlayPage() {
-    super(GameMainSpread.class, GamePlaySpread.class);
+    super(GameMainSpread.class, GamePlaySpread.class,
+            new Boundary(
+                    new Loc(-20,-130),
+                    new Loc(1000, 700)
+            )
+    );
     this.sO = new GamePlaySpread();
 
     geBuilder = new GameElementBuilder(this);
@@ -33,16 +37,19 @@ public class GamePlayPage
     this.addSubElement(
         "road",
         new Road());
-    this.addSubElement(
-        "Taxi",
-        new Taxi(150, 105));
-    this.addSubElement(
-        "fireball",
-        new Fireball(150, 500));
+    // this.addSubElement(
+    //     "Taxi",
+    //     new Taxi(150, 105));
+    // this.addSubElement(
+    //     "fireball",
+    //     new Fireball(150, 500));
 
-    this.addSubElement(new Blood(300,300));
-    this.addSubElement(new Fire(350,350));
-    this.addSubElement(new Smoke(400,400));
+    // this.addSubElement(new Blood(300,300));
+    // this.addSubElement(new Fire(350,350));
+    // this.addSubElement(new Smoke(400,400));
+
+    // this.addSubElement(new Driver(200,300));
+
     // this.gameElementBuilder = new GameElementBuilder(this);
     //
     // int gameInfoSize =
@@ -155,7 +162,7 @@ public class GamePlayPage
   @Override
   public void ctrlIn(Input input) {
     if (input.isDown(Keys.UP)){
-      sO.driveDistance += sO.taxiSpeed;
+      sO.driveDistance += sO.gameGlobalSpeed;
     }
   }
 
@@ -178,6 +185,8 @@ public class GamePlayPage
 
     // syn player score
     this.sI.playerScore = this.sO.playerScore;
+
+    this.boundaryKiller();
   }
 
   @Override

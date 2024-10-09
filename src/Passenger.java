@@ -6,11 +6,10 @@ import engine.trigger.pairTrigger.PairTrigger;
 
 public class Passenger extends Sprite<GamePlaySpread, SpreadNull> implements PairTrigger {
 
-//  private int priority;
-//  private double estimateCost;
-//  private int starty;
-//  private int endy;
-//
+
+  private int starty;
+  private int endy;
+
 //  private boolean alreadSendFlag = false;
   private Status st = Status.getSt();
 //  private Taxi taxi;
@@ -185,7 +184,7 @@ public class Passenger extends Sprite<GamePlaySpread, SpreadNull> implements Pai
   @Override
   public void ctrlIn(Input input) {
     if (input.isDown(Keys.UP)) {
-      this.moveY(sI.taxiSpeed);
+      this.moveY(sI.gameGlobalSpeed);
     }
 //
 //    if (input.isDown(Keys.A) && behavior == 2) {

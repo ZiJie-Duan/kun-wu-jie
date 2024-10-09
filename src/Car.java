@@ -8,7 +8,7 @@ import bagel.Image;
 
 public abstract class Car
     extends Sprite<GamePlaySpread, SpreadNull>
-    implements PairTrigger {
+    implements PairTrigger, DisTrigger {
 
   private Status st = Status.getSt();
 
@@ -16,7 +16,7 @@ public abstract class Car
     super(GamePlaySpread.class, SpreadNull.class);
     Loc loc = new Loc(x, y);
     Loc locLT = new Loc(0, 0);
-    Loc locRB = new Loc(800, 600);
+    Loc locRB = new Loc(1000, 1000);
     Boundary boundary = new Boundary(locLT, locRB);
     Image img = new Image(imgPath);
 

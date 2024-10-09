@@ -6,7 +6,7 @@ import dependencies.MiscUtils;
 import dependencies.General;
 
 /* Please check my README file .*/
-public class PlayerInfoPage extends Element<GameMainSpread, SpreadNull> {
+public class PlayerInfoPage extends Page<GameMainSpread, SpreadNull> {
   private final FormatedText command1;
   private final FormatedText command2;
   private final FormatedText command3;

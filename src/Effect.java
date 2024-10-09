@@ -12,7 +12,6 @@ public abstract class Effect extends Sprite<GamePlaySpread, SpreadNull> {
 
     public Effect(int x, int y, String imgPath, int ttl) {
         super(GamePlaySpread.class, SpreadNull.class);
-        Status st = Status.getSt();
         Loc loc = new Loc(x, y);
         Image img = new Image(imgPath);
         this.ttl = ttl;
@@ -23,7 +22,7 @@ public abstract class Effect extends Sprite<GamePlaySpread, SpreadNull> {
     @Override
     public void ctrlIn(Input input) {
         if (input.isDown(Keys.UP)) {
-            this.moveY(this.sI.taxiSpeed);
+            this.moveY(this.sI.gameGlobalSpeed);
         }
     }
 

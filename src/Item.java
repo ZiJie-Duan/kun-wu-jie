@@ -20,7 +20,7 @@ public abstract class Item extends Sprite<GamePlaySpread, SpreadNull> implements
     @Override
     public void ctrlIn(Input input) {
         if (input.isDown(Keys.UP)) {
-            this.moveY(this.sI.taxiSpeed);
+            this.moveY(this.sI.gameGlobalSpeed);
         }
     }
 

@@ -18,7 +18,7 @@ public class TaxiBroken extends Sprite<GamePlaySpread, SpreadNull> {
   @Override
   public void ctrlIn(Input input) {
     if (input.isDown(Keys.UP)) {
-      this.moveY(this.sI.taxiSpeed);
+      this.moveY(this.sI.gameGlobalSpeed);
     }
   }
 
