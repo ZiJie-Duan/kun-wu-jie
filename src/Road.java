@@ -29,8 +29,8 @@ public class Road extends Element<GamePlaySpread, SpreadNull> {
   @Override
   public void ctrlIn(Input input) {
     if (input.isDown(Keys.UP)) {
-      roadLoc1.moveY(this.sI.taxiSpeed);
-      roadLoc2.moveY(this.sI.taxiSpeed);
+      roadLoc1.moveY(this.sI.gameGlobalSpeed);
+      roadLoc2.moveY(this.sI.gameGlobalSpeed);
 
       if (roadLoc1.getY() > 1152 || roadLoc2.getY() > 1152) {
         if (roadLoc1.getY() > roadLoc2.getY()) {

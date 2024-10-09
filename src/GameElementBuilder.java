@@ -59,6 +59,9 @@ public class GameElementBuilder {
 
     } else if (args.get(0).equals("PASSENGER")) {
       this.passengerBuilder(args.get(1), args.get(2), args.get(3), args.get(4), args.get(5));
+      
+    } else if (args.get(0).equals("DRIVER")) {
+      this.driverBuilder(args.get(1), args.get(2));
     }
   }
 
@@ -74,6 +77,13 @@ public class GameElementBuilder {
         Integer.parseInt(x),
         this.distance + Integer.parseInt(y));
     this.trackedElement.addSubElement(coin);
+  }
+
+  private void driverBuilder(String x, String y) {
+    Driver driver = new Driver(
+        Integer.parseInt(x),
+        this.distance + Integer.parseInt(y));
+    this.trackedElement.addSubElement(driver);
   }
 
   private void passengerBuilder(String x, String y, String piority, String endx, String highy) {

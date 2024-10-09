@@ -7,7 +7,7 @@ import engine.spread.SpreadNull;
 import static dependencies.General.getMidXlocForScreenWithFixWide;
 
 /* Please check my README file .*/
-public class EndPage extends Element<GameMainSpread, SpreadNull> {
+public class EndPage extends Page<GameMainSpread, SpreadNull> {
   private Status st;
   private int startY;
   private int scoreNum = 0;
