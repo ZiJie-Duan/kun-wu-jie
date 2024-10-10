@@ -212,7 +212,7 @@ public class GamePlayPage
 
   @Override
   public void render() {
-    this.taxiHealthText.drawWithInt(this.sO.runningFrame);
+    this.taxiHealthText.drawWithDouble(this.sO.taxiHealth);
   }
 
   // public void updat2e() {

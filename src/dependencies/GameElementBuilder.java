@@ -1,5 +1,6 @@
 package dependencies;
 
+import components.car.EnemyCar;
 import components.car.OtherCar;
 import components.car.Taxi;
 import components.item.Coin;
@@ -57,6 +58,7 @@ public class GameElementBuilder {
     }
 
     this.otherCarBuilder();
+    this.enemyBuilder();
   }
 
   private void gameObjsBuilder(List<String> args) {
@@ -75,11 +77,37 @@ public class GameElementBuilder {
     }
   }
 
+  private void enemyBuilder() {
+    // gnerate new taxi via random location
+    Random random = new Random();
+
+    if (((random.nextInt(1000) + 1) % 400) == 0) {
+      int new_y = random.nextInt(2);
+      if (new_y == 0) {
+        new_y = -50;
+      } else {
+        new_y = 768;
+      }
+
+      int new_x;
+      int new_lane = random.nextInt(3);
+      if (new_lane == 0) {
+        new_x = Integer.parseInt(st.gameProps.getProperty("roadLaneCenter1"));
+      } else if (new_lane == 1) {
+        new_x = Integer.parseInt(st.gameProps.getProperty("roadLaneCenter2"));
+      } else {
+        new_x = Integer.parseInt(st.gameProps.getProperty("roadLaneCenter3"));
+      }
+
+      this.trackedElement.deferAddSubElement(new EnemyCar(new_x, new_y));
+    }
+  }
+
   private void otherCarBuilder() {
     // gnerate new taxi via random location
     Random random = new Random();
 
-    if (((random.nextInt(1000) + 1) % 200) == 0) {
+    if (((random.nextInt(1000) + 1) % 50) == 0) {
       int new_y = random.nextInt(2);
       if (new_y == 0) {
         new_y = -50;

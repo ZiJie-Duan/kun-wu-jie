@@ -23,9 +23,9 @@ public abstract class Element<SI extends Spread, SO extends Spread> implements C
   protected SO sO = null; // Spread Out
   protected int renderPriority = 0; // smaller number means render first
   // renderPriority defualt is 0
-  // if you want make a element above others, make renderPriority bigger than
+  // if you want to make an element above others, make renderPriority bigger than
   // other
-  // it will make the element render later to cover others
+  // thus the element will render later, to cover others
 
   // Constructor
   public Element(Class<SI> spreadInClass, Class<SO> spreadOutClass) {

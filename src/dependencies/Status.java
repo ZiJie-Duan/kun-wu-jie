@@ -29,6 +29,8 @@ public class Status extends EasyMap {
     this.set("font", (String) this.gameProps.getProperty("font"));
     this.set("window_width", (int) Integer.parseInt(this.gameProps.getProperty("window.width")));
     this.set("window_height", (int) Integer.parseInt(this.gameProps.getProperty("window.height")));
+    this.set("crush_invincible_time", (int) 200);
+    this.set("freez_time", (int) 10);
 
   }
 

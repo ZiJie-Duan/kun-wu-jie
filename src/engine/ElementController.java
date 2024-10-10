@@ -44,7 +44,7 @@ public class ElementController {
     // then use renderPriority to sort elementList again
     // stable sort to keep the order of the same renderPriority
     this.elementList.sort(null);
-    System.out.println(this.elementList.size());
+    //System.out.println(this.elementList.size());
   }
 
   public void spread() {

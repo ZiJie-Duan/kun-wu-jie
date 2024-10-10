@@ -15,6 +15,11 @@ public class Loc implements Locatable{
     this.y = y;
   }
 
+  public Loc(Loc loc) {
+    this.x = loc.getX();
+    this.y = loc.getY();
+  }
+
   public void setLoc(double x, double y) {
     this.x = x;
     this.y = y;
