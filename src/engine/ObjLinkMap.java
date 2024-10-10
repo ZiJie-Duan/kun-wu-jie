@@ -109,6 +109,7 @@ public class ObjLinkMap<T> {
   }
 
   public void putAll(ObjLinkMap<T> om){
+    // there have a super big bug!!!!
     this.counter += om.exportCounter();
     this.objMap.putAll(om.exportObjMap());
     this.objInvMap.putAll(om.exportObjInvMap());

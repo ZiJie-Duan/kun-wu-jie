@@ -1,5 +1,6 @@
 package spread;
 
+import components.person.Passenger;
 import dependencies.Status;
 import engine.spread.Spread;
 
@@ -21,7 +22,7 @@ public class GamePlaySpread implements Spread {
   // game runtime flags
   public boolean taxiMoveing = false;
   public boolean passengerInTrip = false;
-  public boolean passengerComming = false;
+  public Passenger passengerComming = null;
   public boolean driverInTaxi = false;
   public boolean isRaining = false;
 
