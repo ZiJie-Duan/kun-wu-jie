@@ -14,7 +14,7 @@ import triggers.AttackBothTrigger;
 import triggers.AttackTargetTrigger;
 import triggers.AttackerTrigger;
 
-public class Person extends Sprite<GamePlaySpread, SpreadNull> implements AttackTargetTrigger {
+public class Person extends Sprite<GamePlaySpread, GamePlaySpread> implements AttackTargetTrigger {
 
     protected double health;
     protected double radius;
@@ -25,7 +25,7 @@ public class Person extends Sprite<GamePlaySpread, SpreadNull> implements Attack
     protected int freezMoveY;
 
     public Person(double x, double y, String imgPath) {
-        super(GamePlaySpread.class, SpreadNull.class);
+        super(GamePlaySpread.class, GamePlaySpread.class);
         Loc loc = new Loc(x, y);
         Image img = new Image(imgPath);
         init(loc, null, img, false);
@@ -44,6 +44,7 @@ public class Person extends Sprite<GamePlaySpread, SpreadNull> implements Attack
     @Override
     public void getHurts(double damage) {
         health -= damage;
+        this.getParentElement().deferAddSubElement(new Blood(this.loc.getX(), this.loc.getY()));
     }
 
     @Override
