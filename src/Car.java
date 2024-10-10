@@ -8,7 +8,7 @@ import bagel.Image;
 
 public abstract class Car
     extends Sprite<GamePlaySpread, SpreadNull>
-    implements PairTrigger, DisTrigger {
+    implements PairTrigger, DisTrigger, AttackTrigger {
 
   private Status st = Status.getSt();
 
