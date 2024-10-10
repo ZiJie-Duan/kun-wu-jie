@@ -1,10 +1,10 @@
 Sources for the resources in this project:
 
-Passenger and Driver image by chasersgaming (https://opengameart.org/content/npc-characters-20)
+components.person.Passenger and components.person.Driver image by chasersgaming (https://opengameart.org/content/npc-characters-20)
 
 Trip End Flag designed by Freepik (http://www.freepik.com)
 
-Blood Image by PWL
+components.effect.Blood Image by PWL
 
 Rain droplets by Jordan Irwin (AntumDeluge) & Kimmo Rundelin (kiheru) - https://opengameart.org/node/134019
 

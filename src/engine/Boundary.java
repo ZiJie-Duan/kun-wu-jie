@@ -23,7 +23,7 @@ public class Boundary {
     return new Loc[] { this.pointTL, this.pointBR };
   }
 
-  public boolean isInBoundary(int px, int py) {
+  public boolean isInBoundary(double px, double py) {
     // test is a point in a boundary or not.
 
     if (px < this.pointTL.getX() || px > this.pointBR.getX()) {
@@ -39,8 +39,8 @@ public class Boundary {
 
   public boolean isInBoundary(Loc point) {
     // test is a point in a boundary or not.
-    int px = point.getX();
-    int py = point.getY();
+    double px = point.getX();
+    double py = point.getY();
     return isInBoundary(px, py);
   }
 }

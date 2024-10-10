@@ -44,7 +44,7 @@ public class ElementController {
     // then use renderPriority to sort elementList again
     // stable sort to keep the order of the same renderPriority
     this.elementList.sort(null);
-    // System.out.println(this.elementList.size());
+    System.out.println(this.elementList.size());
   }
 
   public void spread() {
@@ -102,6 +102,12 @@ public class ElementController {
     }
   }
 
+  public void addElement() {
+    for (Element<?, ?> element : this.elementList) {
+      element.addSubElements();
+    }
+  }
+
   public void runOneFrame(Input input) {
     this.updateElementList();
     this.spread();
@@ -111,5 +117,6 @@ public class ElementController {
     this.render();
     this.cleanSpread();
     this.killElement();
+    this.addElement();
   }
 }

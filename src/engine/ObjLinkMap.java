@@ -93,4 +93,25 @@ public class ObjLinkMap<T> {
   public int size() {
     return objList.size();
   }
+
+
+  public int exportCounter(){
+    return counter;
+  }
+  public Map<String, T> exportObjMap(){
+    return objMap;
+  }
+  public Map<T, String> exportObjInvMap(){
+    return objInvMap;
+  }
+  public List<T> exportObjList(){
+    return objList;
+  }
+
+  public void putAll(ObjLinkMap<T> om){
+    this.counter += om.exportCounter();
+    this.objMap.putAll(om.exportObjMap());
+    this.objInvMap.putAll(om.exportObjInvMap());
+    this.objList.addAll(om.exportObjList());
+  }
 }

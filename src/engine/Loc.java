@@ -1,69 +1,66 @@
 package engine;
 
 /* Loc class for single point location */
-public class Loc {
-  private int x;
-  private int y;
+public class Loc implements Locatable{
+  private double x;
+  private double y;
 
   public Loc() {
     this.x = 0;
     this.y = 0;
   }
 
-  public Loc(int x, int y) {
+  public Loc(double x, double y) {
     this.x = x;
     this.y = y;
   }
 
-  public void setLoc(int x, int y) {
+  public void setLoc(double x, double y) {
     this.x = x;
     this.y = y;
   }
 
-  public void setY(int y) {
+  public void setY(double y) {
     this.y = y;
   }
 
-  public void setX(int x) {
+  public void setX(double x) {
     this.x = x;
   }
 
-  public void moveX(int x) {
+  public void moveX(double x) {
     this.x += x;
   }
 
-  public void moveY(int y) {
+  public void moveY(double y) {
     this.y += y;
   }
 
-  public void move(int x, int y) {
+  public void move(double x, double y) {
     this.x += x;
     this.y += y;
   }
 
-  public int[] getLoc() {
-    // get location as array. x and y
-    return new int[] { this.x, this.y };
-  }
-
-  public int getY() {
+  public double getY() {
     return this.y;
   }
 
-  public int getX() {
+  public double getX() {
     return this.x;
   }
 
-  public double distanceWith(Loc loc) {
-    return Math.sqrt(Math.pow(this.x - loc.getX(), 2) + Math.pow(this.y - loc.getY(), 2));
-  }
-
-  public double distanceWith(int x, int y) {
+  public double distanceWith(double x, double y) {
     return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
   }
 
-  public Loc clone() {
+  @Override
+  public Loc getLoc() {
     return new Loc(this.x, this.y);
+  }
+
+  @Override
+  public double distanceWith(Loc loc) {
+    return Math.sqrt(Math.pow(this.x - loc.getX(), 2) + Math.pow(this.y - loc.getY(), 2));
   }
 
 }
