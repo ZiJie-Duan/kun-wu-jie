@@ -1,14 +1,16 @@
 package engine;
 
+import bagel.Input;
 import engine.spread.*;
 import bagel.Image;
+import engine.trigger.disTrigger.DisTrigger;
 
 /*  Sprite class to control sprite in the game 
  *  sprite defined by location, boundary and image
  *   provide some basic function to control sprite
  *   move, boundary check, and defualt render function
  *  */
-public abstract class Sprite<SI extends Spread, SO extends Spread> extends Element<SI, SO> {
+public abstract class Sprite<SI extends Spread, SO extends Spread> extends Element<SI, SO> implements Locatable{
   protected Loc loc;
   protected Boundary bd;
   protected Image img;
@@ -42,7 +44,7 @@ public abstract class Sprite<SI extends Spread, SO extends Spread> extends Eleme
     this.visible = visible;
   }
 
-  protected void moveX(int dx) {
+  protected void moveX(double dx) {
     if (enableBoundaryCheck) {
       if (bd.isInBoundary(loc.getX() + dx, loc.getY())) {
         this.loc.moveX(dx);
@@ -52,7 +54,7 @@ public abstract class Sprite<SI extends Spread, SO extends Spread> extends Eleme
     }
   }
 
-  protected void moveY(int dy) {
+  protected void moveY(double dy) {
     if (enableBoundaryCheck) {
       if (bd.isInBoundary(loc.getX(), loc.getY() + dy)) {
         this.loc.moveY(dy);
@@ -62,7 +64,7 @@ public abstract class Sprite<SI extends Spread, SO extends Spread> extends Eleme
     }
   }
 
-  protected void setloc(int x, int y) {
+  protected void setloc(double x, double y) {
     if (enableBoundaryCheck) {
       if (bd.isInBoundary(x, y)) {
         this.loc.setLoc(x, y);
@@ -72,6 +74,17 @@ public abstract class Sprite<SI extends Spread, SO extends Spread> extends Eleme
     }
   }
 
+
+  @Override
+  public void ctrlIn(Input input) {
+
+  }
+
+  @Override
+  public void update() {
+
+  }
+
   @Override
   public void render() {
     if (visible) {
@@ -79,7 +92,13 @@ public abstract class Sprite<SI extends Spread, SO extends Spread> extends Eleme
     }
   }
 
-  public Loc getLocClone() {
-    return this.loc.clone();
+  @Override
+  public Loc getLoc() {
+    return this.loc.getLoc();
+  }
+
+  @Override
+  public double distanceWith(Loc loc) {
+    return this.loc.distanceWith(loc);
   }
 }

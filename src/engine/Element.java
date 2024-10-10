@@ -17,6 +17,7 @@ public abstract class Element<SI extends Spread, SO extends Spread> implements C
   private Class<SO> spreadOutClass;
   private Element<?, ?> parentElement;
   private ObjLinkMap<Element<?, ?>> subElements = new ObjLinkMap<Element<?, ?>>();
+  private ObjLinkMap<Element<?, ?>> birthList = new ObjLinkMap<Element<?, ?>>();
   private ObjLinkMap<Element<?, ?>> dieList = new ObjLinkMap<Element<?, ?>>();
   protected SI sI = null; // Spread In
   protected SO sO = null; // Spread Out
@@ -41,17 +42,23 @@ public abstract class Element<SI extends Spread, SO extends Spread> implements C
   }
 
   public void suicide() {
-    this.parentElement.addElementToDieList(this);
+    this.parentElement.deferKillSubElements(this);
   }
 
   public void killSubElements() {
     for (Element<?, ?> subElement : dieList.getObjList()) {
+
       subElements.remove(subElement);
     }
     dieList.clear();
   }
 
-  public void addElementToDieList(Element<?, ?> subElement) {
+  public void addSubElements() {
+    this.subElements.putAll(this.birthList);
+    birthList.clear();
+  }
+
+  public void deferKillSubElements(Element<?, ?> subElement) {
     this.dieList.add(subElement);
   }
 
@@ -59,14 +66,16 @@ public abstract class Element<SI extends Spread, SO extends Spread> implements C
     this.parentElement = parentElement;
   }
 
-  public void addSubElement(Element<?, ?> subElement) {
+  public void deferAddSubElement(Element<?, ?> subElement) {
     subElement.addParentElement(this);
-    this.subElements.add(subElement);
+    this.birthList.add(subElement);
+    //this.subElements.add(subElement);
   }
 
-  public void addSubElement(String key, Element<?, ?> subElement) {
+  public void deferAddSubElement(String key, Element<?, ?> subElement) {
     subElement.addParentElement(this);
-    this.subElements.add(key, subElement);
+    this.birthList.add(subElement);
+    //this.subElements.add(key, subElement);
   }
 
   public Element<?, ?> getSubElement(String key) {
