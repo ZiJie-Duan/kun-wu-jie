@@ -15,25 +15,16 @@ public class Taxi extends Car {
   private int nextSpawnMaxY;
   private int nextSpawnMinY;
 
-
   public Taxi(int x, int y) {
     super(x, y, Status.getSt().gameProps.getProperty("gameObjects.taxi.image"));
-    
-    this.radius = (int)Double.parseDouble(st.gameProps.getProperty("gameObjects.taxi.radius"));
-    this.health = (int)Double.parseDouble(st.gameProps.getProperty("gameObjects.taxi.health")) * 100;
-    this.damage = (int)Double.parseDouble(st.gameProps.getProperty("gameObjects.taxi.damage")) * 100;
+
+    this.radius = (int) Double.parseDouble(st.gameProps.getProperty("gameObjects.taxi.radius"));
+    this.health = (int) Double.parseDouble(st.gameProps.getProperty("gameObjects.taxi.health")) * 100;
+    this.damage = (int) Double.parseDouble(st.gameProps.getProperty("gameObjects.taxi.damage")) * 100;
     this.speedX = Integer.parseInt(st.gameProps.getProperty("gameObjects.taxi.speedX"));
     this.speedY = Integer.parseInt(st.gameProps.getProperty("gameObjects.taxi.speedY"));
     this.nextSpawnMaxY = Integer.parseInt(st.gameProps.getProperty("gameObjects.taxi.nextSpawnMaxY"));
     this.nextSpawnMinY = Integer.parseInt(st.gameProps.getProperty("gameObjects.taxi.nextSpawnMinY"));
-  }
-
-  public void pairTriggerActive(Object obj) {
-    if (obj instanceof Fireball) {
-      if (this.loc.distanceWith(((Fireball) obj).getLocClone()) < 20) {
-        this.health -= 20;
-      }
-    }
   }
 
   // behavior when taxi is damaged
@@ -43,8 +34,7 @@ public class Taxi extends Car {
     this.getParentElement().addSubElement(
         new TaxiBroken(this.loc.getX(), this.loc.getY()));
     this.getParentElement().addSubElement(
-      new Fire(this.loc.getX(), this.loc.getY())
-    );
+        new Fire(this.loc.getX(), this.loc.getY()));
 
     // set flag to pop out driver
     this.sI.driverInTaxi = false;
@@ -62,13 +52,31 @@ public class Taxi extends Car {
     } else {
       new_x = Integer.parseInt(st.gameProps.getProperty("roadLaneCenter3"));
     }
-    this.getParentElement().addSubElement(new Taxi(new_x,new_y));
+    this.getParentElement().addSubElement(new Taxi(new_x, new_y));
 
-    // remove the taxi now 
+    // remove the taxi now
     this.suicide();
   }
 
+  @Override
+  public void getHurts(int damage) {
+    this.health -= damage;
+    this.getParentElement().addSubElement(new Smoke(this.loc.getX(), this.loc.getY()));
+  }
 
+  @Override
+  public int damageValue() {
+    return this.damage;
+  }
+
+  @Override
+  public void pairTriggerActive(Object obj) {
+    if (obj instanceof Fireball) {
+      if (this.loc.distanceWith(((Fireball) obj).getLocClone()) < 20) {
+        this.health -= 20;
+      }
+    }
+  }
 
   @Override
   public void ctrlIn(Input input) {

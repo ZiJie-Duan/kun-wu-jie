@@ -39,6 +39,11 @@ public class ElementController {
         this.elementQueue.offer(element);
       }
     }
+
+    // use breadth first search to sort elementList
+    // then use renderPriority to sort elementList again
+    // stable sort to keep the order of the same renderPriority
+    this.elementList.sort(null);
     // System.out.println(this.elementList.size());
   }
 

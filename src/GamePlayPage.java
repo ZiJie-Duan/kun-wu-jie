@@ -4,6 +4,7 @@ import engine.Boundary;
 import engine.Loc;
 import engine.Page;
 import engine.trigger.pairTrigger.*;
+import engine.IntelligentText;
 
 public class GamePlayPage
     extends Page<GameMainSpread, GamePlaySpread>
@@ -11,7 +12,9 @@ public class GamePlayPage
 
   private final Status st = Status.getSt();
   private GameElementBuilder geBuilder;
-  //
+
+  private final IntelligentText taxiHealthText;
+
   // private final FormatedText textPay;
   // private final FormatedText textTarget;
   // private final FormatedText textFrame;
@@ -25,114 +28,125 @@ public class GamePlayPage
 
   public GamePlayPage() {
     super(GameMainSpread.class, GamePlaySpread.class,
-            new Boundary(
-                    new Loc(-20,-130),
-                    new Loc(1000, 700)
-            )
-    );
+        new Boundary(
+            new Loc(-20, -130),
+            new Loc(1000, 700)));
+
+    this.renderPriority = 1;
     this.sO = new GamePlaySpread();
 
     geBuilder = new GameElementBuilder(this);
+    int gameInfoSize = Integer.parseInt(st.gameProps.getProperty("gamePlay.info.fontSize"));
 
     this.addSubElement(
         "road",
         new Road());
-    // this.addSubElement(
-    //     "Taxi",
-    //     new Taxi(150, 105));
-    // this.addSubElement(
-    //     "fireball",
-    //     new Fireball(150, 500));
 
-    // this.addSubElement(new Blood(300,300));
-    // this.addSubElement(new Fire(350,350));
-    // this.addSubElement(new Smoke(400,400));
+    this.taxiHealthText = new IntelligentText(
+        st.gameProps.getProperty("font"),
+        gameInfoSize,
+        st.messageProps.getProperty("gamePlay.taxiHealth"),
+        new Loc(
+            Integer.parseInt(st.gameProps.getProperty("gamePlay.taxiHealth.x")),
+            Integer.parseInt(st.gameProps.getProperty("gamePlay.taxiHealth.y"))));
 
-    // this.addSubElement(new Driver(200,300));
-
-    // this.gameElementBuilder = new GameElementBuilder(this);
-    //
-    // int gameInfoSize =
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.info.fontSize"));
-    // String gameInfoFont = st.gameProps.getProperty("font");
-    //
-    // bgImg1 = new FormatedImg(st.gameProps.getProperty("backgroundImage"));
-    // bgImg2 = new FormatedImg(st.gameProps.getProperty("backgroundImage"));
-    // bgImg1.setLoc(512, 348);
-    // bgImg2.setLoc(512, -348);
-    //
-    // textPay = new FormatedText(gameInfoFont, gameInfoSize,
-    // st.messageProps.getProperty("gamePlay.earnings"));
-    //
-    // textTarget = new FormatedText(gameInfoFont, gameInfoSize,
-    // st.messageProps.getProperty("gamePlay.target"));
-    //
-    // textFrame = new FormatedText(gameInfoFont, gameInfoSize,
-    // st.messageProps.getProperty("gamePlay.remFrames"));
-    //
-    // tripTitleText = new FormatedText(gameInfoFont, gameInfoSize,
-    // st.messageProps.getProperty("gamePlay.onGoingTrip.title"));
-    //
-    // estimateFeeText = new FormatedText(gameInfoFont, gameInfoSize,
-    // st.messageProps.getProperty("gamePlay.trip.expectedEarning"));
-    //
-    // piorityText = new FormatedText(gameInfoFont, gameInfoSize,
-    // st.messageProps.getProperty("gamePlay.trip.priority"));
-    //
-    // lastTripTitleText = new FormatedText(gameInfoFont, gameInfoSize,
-    // st.messageProps.getProperty("gamePlay.completedTrip.title"));
-    //
-    // lastTripPenaltyText = new FormatedText(gameInfoFont, gameInfoSize,
-    // st.messageProps.getProperty("gamePlay.trip.penalty"));
-    //
-    // textPay.setLoc(
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.earnings.x")),
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.earnings.y")));
-    //
-    // textTarget.setLoc(
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.target.x")),
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.target.y")));
-    //
-    // textFrame.setLoc(
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.maxFrames.x")),
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.maxFrames.y")));
-    //
-    // tripTitleText.setLoc(
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")));
-    //
-    // estimateFeeText.setLoc(
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")) + 30);
-    //
-    // piorityText.setLoc(
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")) + 60);
-    //
-    // lastTripTitleText.setLoc(
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")));
-    //
-    // lastTripPenaltyText.setLoc(
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
-    // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")) + 90);
-    //
-    // spread.set("taxiSpeed",
-    // Integer.parseInt(st.gameProps.getProperty("gameObjects.taxi.speedY")));
-    // spread.set("forwardDistance", 0);
-    // spread.set("maxFrames",
-    // Integer.parseInt(st.gameProps.getProperty("gamePlay.maxFrames")));
-    // spread.set("getPay", (Double) 0.0);
-    // spread.set("targetScore",
-    // Double.parseDouble(st.gameProps.getProperty("gamePlay.target")));
-    // spread.set("currentFee", (Double) 0.0);
-    // spread.set("currentPriority", 0);
-    // spread.set("currentPenalty", (Double) 0.0);
-    // spread.set("tripStatus", 0);
-    // spread.set("finishTrip", 0);
-
-    // 0 never trip 1 on trip 2 not in trip
   }
+  // this.addSubElement(
+  // "Taxi",
+  // new Taxi(150, 105));
+  // this.addSubElement(
+  // "fireball",
+  // new Fireball(150, 500));
+
+  // this.addSubElement(new Blood(300,300));
+  // this.addSubElement(new Fire(350,350));
+  // this.addSubElement(new Smoke(400,400));
+
+  // this.addSubElement(new Driver(200,300));
+
+  // this.gameElementBuilder = new GameElementBuilder(this);
+  //
+  // int gameInfoSize =
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.info.fontSize"));
+  // String gameInfoFont = st.gameProps.getProperty("font");
+  //
+  // bgImg1 = new FormatedImg(st.gameProps.getProperty("backgroundImage"));
+  // bgImg2 = new FormatedImg(st.gameProps.getProperty("backgroundImage"));
+  // bgImg1.setLoc(512, 348);
+  // bgImg2.setLoc(512, -348);
+  //
+  // textPay = new FormatedText(gameInfoFont, gameInfoSize,
+  // st.messageProps.getProperty("gamePlay.earnings"));
+  //
+  // textTarget = new FormatedText(gameInfoFont, gameInfoSize,
+  // st.messageProps.getProperty("gamePlay.target"));
+  //
+  // textFrame = new FormatedText(gameInfoFont, gameInfoSize,
+  // st.messageProps.getProperty("gamePlay.remFrames"));
+  //
+  // tripTitleText = new FormatedText(gameInfoFont, gameInfoSize,
+  // st.messageProps.getProperty("gamePlay.onGoingTrip.title"));
+  //
+  // estimateFeeText = new FormatedText(gameInfoFont, gameInfoSize,
+  // st.messageProps.getProperty("gamePlay.trip.expectedEarning"));
+  //
+  // piorityText = new FormatedText(gameInfoFont, gameInfoSize,
+  // st.messageProps.getProperty("gamePlay.trip.priority"));
+  //
+  // lastTripTitleText = new FormatedText(gameInfoFont, gameInfoSize,
+  // st.messageProps.getProperty("gamePlay.completedTrip.title"));
+  //
+  // lastTripPenaltyText = new FormatedText(gameInfoFont, gameInfoSize,
+  // st.messageProps.getProperty("gamePlay.trip.penalty"));
+  //
+  // textPay.setLoc(
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.earnings.x")),
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.earnings.y")));
+  //
+  // textTarget.setLoc(
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.target.x")),
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.target.y")));
+  //
+  // textFrame.setLoc(
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.maxFrames.x")),
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.maxFrames.y")));
+  //
+  // tripTitleText.setLoc(
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")));
+  //
+  // estimateFeeText.setLoc(
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")) + 30);
+  //
+  // piorityText.setLoc(
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")) + 60);
+  //
+  // lastTripTitleText.setLoc(
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")));
+  //
+  // lastTripPenaltyText.setLoc(
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.x")),
+  // Integer.parseInt(st.gameProps.getProperty("gameplay.tripInfo.y")) + 90);
+  //
+  // spread.set("taxiSpeed",
+  // Integer.parseInt(st.gameProps.getProperty("gameObjects.taxi.speedY")));
+  // spread.set("forwardDistance", 0);
+  // spread.set("maxFrames",
+  // Integer.parseInt(st.gameProps.getProperty("gamePlay.maxFrames")));
+  // spread.set("getPay", (Double) 0.0);
+  // spread.set("targetScore",
+  // Double.parseDouble(st.gameProps.getProperty("gamePlay.target")));
+  // spread.set("currentFee", (Double) 0.0);
+  // spread.set("currentPriority", 0);
+  // spread.set("currentPenalty", (Double) 0.0);
+  // spread.set("tripStatus", 0);
+  // spread.set("finishTrip", 0);
+
+  // 0 never trip 1 on trip 2 not in trip
+  // }
 
   // private void drawText() {
   // textPay.drawWithExtraDouble(this.spread.getDouble("getPay"));
@@ -161,7 +175,7 @@ public class GamePlayPage
 
   @Override
   public void ctrlIn(Input input) {
-    if (input.isDown(Keys.UP)){
+    if (input.isDown(Keys.UP)) {
       sO.driveDistance += sO.gameGlobalSpeed;
     }
   }
@@ -177,7 +191,7 @@ public class GamePlayPage
     }
 
     this.geBuilder.buildInRange(sO.driveDistance);
-    if (this.geBuilder.isRainning(sO.runningFrame)){
+    if (this.geBuilder.isRainning(sO.runningFrame)) {
       this.sO.isRaining = true;
     } else {
       this.sO.isRaining = false;
@@ -191,7 +205,7 @@ public class GamePlayPage
 
   @Override
   public void render() {
-
+    this.taxiHealthText.drawWithInt(this.sO.runningFrame);
   }
 
   // public void updat2e() {

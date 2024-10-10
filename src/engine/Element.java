@@ -2,6 +2,7 @@ package engine;
 
 import engine.spread.Spread;
 import java.util.List;
+
 import bagel.Input;
 
 /* Element public{
@@ -11,7 +12,7 @@ import bagel.Input;
   parentElement's spread out (SO) is subElements's spread in (SI)
   subElements's spread in (SI) is parentElement's spread out (SO)
 }*/
-public abstract class Element<SI extends Spread, SO extends Spread> {
+public abstract class Element<SI extends Spread, SO extends Spread> implements Comparable<Element<?, ?>> {
   private Class<SI> spreadInClass;
   private Class<SO> spreadOutClass;
   private Element<?, ?> parentElement;
@@ -19,6 +20,11 @@ public abstract class Element<SI extends Spread, SO extends Spread> {
   private ObjLinkMap<Element<?, ?>> dieList = new ObjLinkMap<Element<?, ?>>();
   protected SI sI = null; // Spread In
   protected SO sO = null; // Spread Out
+  protected int renderPriority = 0; // smaller number means render first
+  // renderPriority defualt is 0
+  // if you want make a element above others, make renderPriority bigger than
+  // other
+  // it will make the element render later to cover others
 
   // Constructor
   public Element(Class<SI> spreadInClass, Class<SO> spreadOutClass) {
@@ -96,5 +102,14 @@ public abstract class Element<SI extends Spread, SO extends Spread> {
   public abstract void update();
 
   public abstract void render();
+
+  public int getRenderPriority() {
+    return this.renderPriority;
+  }
+
+  @Override
+  public int compareTo(Element<?, ?> other) {
+    return Integer.compare(this.getRenderPriority(), other.getRenderPriority());
+  }
 
 }
