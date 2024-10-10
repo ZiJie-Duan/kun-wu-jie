@@ -3,12 +3,8 @@ package components.car;
 import bagel.Input;
 import bagel.Keys;
 import components.effect.Fire;
-import components.effect.Smoke;
 import components.effect.TaxiBroken;
 import dependencies.Status;
-import engine.trigger.disTrigger.DisTrigger;
-import triggers.AttackBothTrigger;
-import triggers.AttackerTrigger;
 
 import java.util.Random;
 
@@ -17,11 +13,7 @@ public class Taxi extends Car {
 
   private Status st = Status.getSt();
 
-  private double radius;
-  private double health;
-  private double damage;
   private double speedX;
-  private double speedY;
   private int nextSpawnMaxY;
   private int nextSpawnMinY;
 
@@ -36,6 +28,7 @@ public class Taxi extends Car {
     this.nextSpawnMaxY = Integer.parseInt(st.gameProps.getProperty("gameObjects.taxi.nextSpawnMaxY"));
     this.nextSpawnMinY = Integer.parseInt(st.gameProps.getProperty("gameObjects.taxi.nextSpawnMinY"));
   }
+
 
   // behavior when taxi is damaged
   @Override
@@ -68,32 +61,6 @@ public class Taxi extends Car {
     this.suicide();
   }
 
-  @Override
-  public double damageValue() {
-    return this.damage;
-  }
-
-  @Override
-  public void getHurts(double damage) {
-    this.health -= damage;
-    this.getParentElement().deferAddSubElement(new Smoke(this.loc.getX(), this.loc.getY()));
-  }
-
-  @Override
-  public double radius() {
-    return this.radius;
-  }
-
-  @Override
-  public void pairTriggerActive(Object obj) {
-
-    if (obj instanceof AttackerTrigger && (obj != this)){
-      if (this.isCollision((DisTrigger) obj)) {
-        this.getHurts(((AttackBothTrigger) obj).damageValue());
-      }
-    }
-
-  }
 
   @Override
   public void ctrlIn(Input input) {
@@ -104,7 +71,7 @@ public class Taxi extends Car {
         this.moveY(this.sI.gameGlobalSpeed);
       }
 
-    } else {
+    } else if (this.freezTime <= 0){
       if (input.isDown(Keys.UP)) {
         this.sI.taxiMoveing = true;
       }
@@ -121,12 +88,29 @@ public class Taxi extends Car {
     }
   }
 
+  // in this game we not allow System to reset Taxi Speed
+  @Override
+  protected void resetRandomSpeedY(){
+  }
+
   @Override
   public void update() {
-    this.sI.taxiHealth = this.health;
+
+    this.crushInvincibleTime -= 1;
+
+    if (this.freezTime > 0) {
+      this.freezTime -= 1;
+      if (this.freezMoveUp){
+        this.moveY(-1);
+      } else {
+        this.moveY(1);
+      }
+    }
+
     if (this.health <= 0) {
       this.damageBehavior();
     }
-  }
 
+    this.sI.taxiHealth = this.health;
+  }
 }

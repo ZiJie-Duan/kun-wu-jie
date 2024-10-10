@@ -4,9 +4,12 @@ import dependencies.Status;
 import engine.*;
 import engine.spread.SpreadNull;
 import bagel.*;
+import engine.trigger.disTrigger.DisTrigger;
 import engine.trigger.pairTrigger.PairTrigger;
+import triggers.AttackTargetTrigger;
+import triggers.AttackerTrigger;
 
-public class Fireball extends Item{
+public class Fireball extends Item implements AttackerTrigger {
 
   private double radius;
   private double damage;
@@ -27,6 +30,25 @@ public class Fireball extends Item{
 
   @Override
   public void pairTriggerActive(Object obj) {
+    if (obj instanceof AttackTargetTrigger){
+      if (this.isCollision((DisTrigger)obj)){
+        this.suicide();
+      }
+    }
+  }
 
+  @Override
+  public void ctrlIn(Input input){
+
+  }
+
+  @Override
+  public void update(){
+    this.moveY(-this.shootSpeedY);
+  }
+
+  @Override
+  public double damageValue() {
+    return this.damage;
   }
 }

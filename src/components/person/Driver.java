@@ -13,9 +13,7 @@ public class Driver extends Person {
 
   private double walkSpeedX;
   private double walkSpeedY;
-  private double radius;
   private double taxiGetInRadius;
-  private double health;
 
   // pop out flag
   private boolean alreadyPopOut = false;
@@ -25,9 +23,11 @@ public class Driver extends Person {
     Status st = Status.getSt();
     this.walkSpeedX = Double.parseDouble(st.gameProps.getProperty("gameObjects.driver.walkSpeedX"));
     this.walkSpeedY = Double.parseDouble(st.gameProps.getProperty("gameObjects.driver.walkSpeedY"));
-    this.radius = Double.parseDouble(st.gameProps.getProperty("gameObjects.driver.radius"));
     this.taxiGetInRadius = Double.parseDouble(st.gameProps.getProperty("gameObjects.driver.taxiGetInRadius"));
-    this.health = Double.parseDouble(st.gameProps.getProperty("gameObjects.driver.health")) * 100;
+
+    double radius = Double.parseDouble(st.gameProps.getProperty("gameObjects.driver.radius"));
+    double health = Double.parseDouble(st.gameProps.getProperty("gameObjects.driver.health")) * 100;
+    this.initPersonArgs(health, radius);
   }
 
   private void driverPopOut() {
@@ -39,40 +39,35 @@ public class Driver extends Person {
     this.sI.driverInTaxi = true;
   }
 
-  private void die() {
-    this.getParentElement().deferAddSubElement(new Blood(this.loc.getX(), this.loc.getY()));
-    this.suicide();
-  }
-
-  @Override
-  public void getHurts(double damage) {
-    this.health -= damage;
-  }
-
   @Override
   public void ctrlIn(Input input) {
     // if driver in components.car.Taxi, then follow the movement of components.car.Taxi
     // if not, Y axis behavior is difference
-    if (!this.sI.driverInTaxi) {
-      if (input.isDown(Keys.UP)) {
-        this.moveY(-this.walkSpeedY);
-      }
-      if (input.isDown(Keys.DOWN)) {
-        this.moveY(+this.walkSpeedY);
-      }
-    }
+    if (this.freezTime <= 0){
 
-    if (input.isDown(Keys.LEFT)) {
-      this.moveX(-this.walkSpeedX);
-    }
+      if (!this.sI.driverInTaxi) {
+        if (input.isDown(Keys.UP)) {
+          this.moveY(-this.walkSpeedY);
+        }
+        if (input.isDown(Keys.DOWN)) {
+          this.moveY(+this.walkSpeedY);
+        }
+      }
 
-    if (input.isDown(Keys.RIGHT)) {
-      this.moveX(this.walkSpeedX);
+      if (input.isDown(Keys.LEFT)) {
+        this.moveX(-this.walkSpeedX);
+      }
+
+      if (input.isDown(Keys.RIGHT)) {
+        this.moveX(this.walkSpeedX);
+      }
     }
   }
 
   @Override
   public void update() {
+    super.update();
+
     // if driver is not in taxi and not already pop out
     if (!this.sI.driverInTaxi && !alreadyPopOut) {
       this.driverPopOut();
@@ -88,16 +83,11 @@ public class Driver extends Person {
 
     // sync driver health to spread
     this.sI.driverHealth = this.health;
-
-    // if driver health is 0, add blood
-    if (this.health <= 0) {
-      die();
-    }
-
   }
 
   @Override
   public void pairTriggerActive(Object obj) {
+    super.pairTriggerActive(obj);
 
     if (obj instanceof Taxi) {
       // get on taxi
@@ -105,17 +95,5 @@ public class Driver extends Person {
         this.driverGetOnTaxi();
       }
     }
-
-    if (obj instanceof AttackerTrigger && (obj != this)){
-      if (this.isCollision((DisTrigger) obj)) {
-        this.getHurts(((AttackBothTrigger) obj).damageValue());
-      }
-    }
-
-  }
-
-  @Override
-  public double radius() {
-    return this.radius;
   }
 }
