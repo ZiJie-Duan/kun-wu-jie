@@ -1,0 +1,1 @@
+I tried my best. I spent a lot of time on the engine package, and many of the concepts come from the game engine I created in Project 1. I iterated on it and introduced new abstractions, but I ran out of time. I'm not very satisfied with the specific implementation of the passenger and taxi related classes. The part I'm most proud of is the engine package.

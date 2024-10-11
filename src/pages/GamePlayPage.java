@@ -31,8 +31,7 @@ public class GamePlayPage
    private final IntelligentText piorityText;
    private final IntelligentText lastTripTitleText;
    private final IntelligentText lastTripPenaltyText;
-  //
-  // private final dependencies.GameElementBuilder gameElementBuilder;
+
 
   public GamePlayPage() {
     super(GameMainSpread.class, GamePlaySpread.class,
@@ -43,9 +42,11 @@ public class GamePlayPage
     this.renderPriority = 1;
     this.sO = new GamePlaySpread();
 
+    // init game element builder
     geBuilder = new GameElementBuilder(this);
     int gameInfoSize = Integer.parseInt(st.gameProps.getProperty("gamePlay.info.fontSize"));
 
+    // add all components in to the page
     this.deferAddSubElement(
         "road",
         new Road());
@@ -149,12 +150,14 @@ public class GamePlayPage
 
     sO.runningFrame += 1;
 
+    // exit game to end page
     if ((this.sO.gameOver)||(sO.runningFrame > sO.maxFrame)) {
       this.sI.pageIndex += 1;
       this.sI.pageChange = true;
       suicide();
     }
 
+    // after init to run these code
     if (sO.runningFrame > 1){
       boolean taxiInGame = false;
       for (Element<?,?> element : this.getSubElementList()){
@@ -169,7 +172,7 @@ public class GamePlayPage
       }
     }
 
-
+    // work with element builder
     this.geBuilder.buildInRange(sO.driveDistance);
     if (this.geBuilder.isRainning(sO.runningFrame)) {
       this.sO.isRaining = true;

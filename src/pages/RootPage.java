@@ -8,6 +8,7 @@ import engine.Page;
 import engine.spread.SpreadNull;
 import spread.GameMainSpread;
 
+/*Root page also the Root Element for the whole Engine */
 public class RootPage extends Page<SpreadNull, GameMainSpread> {
 
   private Image BACKGROUND_IMAGE;
@@ -42,6 +43,7 @@ public class RootPage extends Page<SpreadNull, GameMainSpread> {
 
   @Override
   public void update() {
+    // change page 
     if (this.sO.pageChange) {
       this.sO.pageChange = false;
       this.buildPage();
@@ -50,6 +52,7 @@ public class RootPage extends Page<SpreadNull, GameMainSpread> {
 
   @Override
   public void render() {
+    // draw the green image
     BACKGROUND_IMAGE.draw(st.getInt("x_mid"), st.getInt("y_mid"));
   }
 }

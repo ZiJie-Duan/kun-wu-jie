@@ -10,6 +10,7 @@ import pages.RootPage;
  */
 public class ShadowTaxi extends GameCore {
 
+    // init game engine
     public ShadowTaxi(int width, int height, String title) {
         super(width, height, title, RootPage.class);
     }

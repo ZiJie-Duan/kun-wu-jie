@@ -7,6 +7,7 @@ import engine.*;
 import engine.spread.SpreadNull;
 import spread.GameMainSpread;
 
+/* wellcome page  */
 public class HomePage extends Page<GameMainSpread, SpreadNull> {
 
   private final FormatedText title;
