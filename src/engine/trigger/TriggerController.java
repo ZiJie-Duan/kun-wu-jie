@@ -5,6 +5,8 @@ import engine.trigger.pairTrigger.*;
 
 import engine.Element;
 
+import java.util.List;
+
 /* TriggerController is a core part for all the Trigger in engine
  * depend different interface be implment by different class 
  * TriggerController will automaticly trigger it 
@@ -30,10 +32,15 @@ public class TriggerController {
       }
 
       // subElements trigger with subElements
-      for (Element<?, ?> sube1 : parentElement.getSubElementList()) {
-        for (Element<?, ?> sube2 : parentElement.getSubElementList()) {
+      List<Element<?, ?>> subElements = parentElement.getSubElementList();
+      int size = subElements.size();
 
-          // check if sube1 and sube2 is PairTrigger
+      for (int i = 0; i < size; i++) {
+        for (int j = i + 1; j < size; j++) {
+          Element<?, ?> sube1 = subElements.get(i);
+          Element<?, ?> sube2 = subElements.get(j);
+
+          // check if sube1 and sube2 are both instances of PairTrigger
           if (sube1 instanceof PairTrigger && sube2 instanceof PairTrigger) {
             TriggerController.pairTriggerActive((PairTrigger) sube1, (PairTrigger) sube2);
           }
@@ -56,9 +63,17 @@ public class TriggerController {
       // only sbuElements trigger with subElements
       // thus parentElement not need to be any PairTrigger
       if (parentElement instanceof TriggerSub) {
-        for (Element<?, ?> sube1 : parentElement.getSubElementList()) {
-          for (Element<?, ?> sube2 : parentElement.getSubElementList()) {
-            // check if sube1 and sube2 is PairTrigger
+
+        // subElements trigger with subElements
+        List<Element<?, ?>> subElements = parentElement.getSubElementList();
+        int size = subElements.size();
+
+        for (int i = 0; i < size; i++) {
+          for (int j = i + 1; j < size; j++) {
+            Element<?, ?> sube1 = subElements.get(i);
+            Element<?, ?> sube2 = subElements.get(j);
+
+            // check if sube1 and sube2 are both instances of PairTrigger
             if (sube1 instanceof PairTrigger && sube2 instanceof PairTrigger) {
               TriggerController.pairTriggerActive((PairTrigger) sube1, (PairTrigger) sube2);
             }

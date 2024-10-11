@@ -66,7 +66,7 @@ public class IOUtils {
      * @param score The score to be written
      */
     public static void writeScoreToFile(String filename, String score) {
-        try(FileWriter fw = new FileWriter(filename, true);
+        try(FileWriter fw = new FileWriter(filename, false);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
         {

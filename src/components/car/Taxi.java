@@ -4,7 +4,10 @@ import bagel.Input;
 import bagel.Keys;
 import components.effect.Fire;
 import components.effect.TaxiBroken;
+import components.item.Coin;
+import components.item.InvinciblePower;
 import dependencies.Status;
+import engine.trigger.disTrigger.DisTrigger;
 
 import java.util.Random;
 
@@ -16,6 +19,7 @@ public class Taxi extends Car {
   private double speedX;
   private int nextSpawnMaxY;
   private int nextSpawnMinY;
+
 
 
   public Taxi(double x, double y) {
@@ -94,9 +98,33 @@ public class Taxi extends Car {
   }
 
   @Override
+  public void pairTriggerActive(Object obj) {
+    super.pairTriggerActive(obj);
+
+    if (this.isCollision((DisTrigger) obj)){
+      if (obj instanceof Coin) {
+        if (this.sI.levelUpFrame <= 0) {
+          this.sI.levelUpFrame = 500;
+          this.sI.alreadyLevelUP = false;
+        }
+      } else if (obj instanceof InvinciblePower){
+        this.sI.invinciblePowerFrame = 1000;
+      }
+    }
+  }
+
+  @Override
   public void update() {
 
-    this.crushInvincibleTime -= 1;
+    if (this.sI.invinciblePowerFrame > 0){
+      this.invincible = true;
+    } else {
+      this.invincible = false;
+    }
+
+    if (this.crushInvincibleTime > 0){
+      this.crushInvincibleTime -= 1;
+    }
 
     if (this.freezTime > 0) {
       this.freezTime -= 1;

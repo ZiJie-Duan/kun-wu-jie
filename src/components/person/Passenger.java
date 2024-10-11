@@ -21,6 +21,8 @@ public class Passenger extends Person implements TriggerWithSub {
     private double taxiGetInRadius;
     private double fontSize;
 
+    private boolean hasUmbrella;
+    private boolean alreadyShiftPriority = false;
     private int priority;
     private double estimateCost;
     private int starty;
@@ -35,11 +37,13 @@ public class Passenger extends Person implements TriggerWithSub {
     private Taxi taxi;
     private TripEnd tripEnd;
 
+    private boolean PassengerAlreadyPopOut = false;
+
      private int behavior = 0;
     //     0: waiting, 1: moveToTaxi, 2: onTaxi
     //     3: moveToTripEnd, 4: finishTrip
 
-    public Passenger(int x, int y, int priority, int endx, int endy) {
+    public Passenger(int x, int y, int priority, int endx, int endy, int umbrella) {
         super(x, y, Status.getSt().gameProps.getProperty("gameObjects.passenger.image"));
         Status st = Status.getSt();
 
@@ -57,7 +61,12 @@ public class Passenger extends Person implements TriggerWithSub {
         this.starty = y;
         this.endy = endy;
         this.endx = endx;
-        this.estimateCost = calculateCost();
+
+        if (umbrella == 1) {
+            this.hasUmbrella = true;
+        } else {
+            this.hasUmbrella = false;
+        }
 
         this.priorityTextLoc = new Loc(this.loc);
         priorityText = new IntelligentText(
@@ -103,11 +112,27 @@ public class Passenger extends Person implements TriggerWithSub {
      private void getOffTaxi() {
         this.sI.passengerInTrip = false;
         this.setVisibility(true);
+        this.sI.playerScore += this.sI.estimateCost;
      }
 
      private void finishTrip() {
          tripEnd.suicide();
      }
+
+     private void passengerPopOut(){
+        if (!PassengerAlreadyPopOut){
+            this.loc.moveX(-100);
+            this.setVisibility(true);
+            PassengerAlreadyPopOut = true;
+        }
+     }
+
+    private void passengerGetInAgain(){
+        if (PassengerAlreadyPopOut){
+            this.setVisibility(false);
+            PassengerAlreadyPopOut = false;
+        }
+    }
 
      private void moveToObj(Loc obj) {
          int xDir = 1;
@@ -133,60 +158,133 @@ public class Passenger extends Person implements TriggerWithSub {
     public void update() {
         super.update();
 
-        this.sO = this.sI;
+        if (!this.alreadyShiftPriority && this.sI.isRaining && !this.hasUmbrella){
+            this.priority = 1;
+            this.alreadyShiftPriority = true;
+        }
 
+        this.estimateCost = calculateCost();
+
+        this.sO = this.sI; // share the Spread to TripEnd.
+
+        // behavior 0 and 4 just do nothing
+
+        // behavior 1: moveToTaxi
         if (behavior == 1){
             this.moveToObj(this.taxi.getLoc());
+        
+        // behavior 2: onTaxi
         } else if (behavior == 2){
-            System.out.println("yesyes");
-            this.loc.setLoc(this.taxi.getLoc().getX(), this.taxi.getLoc().getY());
+
+            this.sI.passengerHealth = this.health;
+            this.sI.estimateCost = this.estimateCost;
+            this.sI.priority = this.priority;
+
+
+            if (!this.sI.driverInTaxi){
+                this.passengerPopOut();
+                this.moveToObj(this.sI.driverLoc);
+            } else {
+                this.passengerGetInAgain();
+                this.loc.setLoc(this.taxi.getLoc().getX(), this.taxi.getLoc().getY());
+            }
+            
+        // behavior 3: moveToTripEnd
         } else if (behavior == 3){
             this.moveToObj(this.tripEnd.getLoc());
         }
 
+        if ((behavior == 2) && (this.sI.levelUpFrame > 0) &&(!this.sI.alreadyLevelUP)){
+            if (this.priority <= 1){
+                this.priority = 1;
+            } else {
+                this.priority -= 1;
+            }
+
+            this.sI.alreadyLevelUP = true;
+        }
+
+        // Sync the text location with the passenger location
         this.estimateCostTextLoc.setX(this.loc.getX() - 100);
+        this.estimateCostTextLoc.setY(this.loc.getY());
         this.priorityTextLoc.setX(this.loc.getX() - 30);
+        this.priorityTextLoc.setY(this.loc.getY());
     }
 
     @Override
     public void pairTriggerActive(Object obj) {
         super.pairTriggerActive(obj);
+        
+        // 0: waiting, 1: moveToTaxi, 2: onTaxi
+        // this code only works when the passenger is waiting or moving to taxi
+        if (behavior <= 1 && obj instanceof Taxi && this.sI.driverInTaxi){
 
-        if (obj instanceof Taxi && behavior <= 1){
+            // if the passenger is close enough to the taxi
             if (this.loc.distanceWith(((Locatable)obj).getLoc()) < taxiGetInRadius) {
+                // if the taxi is not moving and there is no passenger in the taxi
                 if (!this.sI.taxiMoveing && !this.sI.passengerInTrip){
                     this.behavior = 2;
                     this.getOnTaxi();
                 }
+            
+            // if the passenger is not close enough to the taxi (but still close enough to detect it)
             } else if (this.loc.distanceWith(((Locatable)obj).getLoc()) < taxiDetectRadius) {
+                // if the taxi is not moving and there is no passenger in the taxi
                 if (!this.sI.taxiMoveing && !this.sI.passengerInTrip){
+                    // move to the taxi
                     this.behavior = 1;
                     this.taxi = (Taxi) obj;
                 } else {
+                    // if the taxi is moving or there is a passenger in the taxi
+                    // the passenger will back to waiting
                     this.behavior = 0;
                 }
             }
         }
-
-        if (obj instanceof TripEnd){
-            if (this.loc.distanceWith(((Locatable)obj).getLoc()) < 2) {
-                this.behavior = 4;
-                this.finishTrip();
-            } else if (this.loc.distanceWith(((Locatable)obj).getLoc()) < 80) {
+        
+        // 2: onTaxi, 3: moveToTripEnd
+        // this code only works when the passenger is on the taxi
+        if (behavior <= 2 && obj instanceof TripEnd){
+            // when the passenger is close enough to the trip end
+            // and the taxi is not moving, then the passenger will get off the taxi
+             if ((this.loc.distanceWith(((Locatable)obj).getLoc()) < 80) ||
+                     (this.loc.getY() < ((TripEnd) obj).getLoc().getY())) {
                 if (!this.sI.taxiMoveing){
                     this.behavior = 3;
                     this.getOffTaxi();
                 }
             }
         }
+        
+        // 3: moveToTripEnd, 4: finishTrip
+        // this code only works when the passenger is moving to the trip end
+        if (behavior <= 3 && obj instanceof TripEnd){
+            // when the passenger is close enough to the trip end
+            // the passenger will finish the trip
+          if (this.loc.distanceWith(((Locatable)obj).getLoc()) < 2) {
+            this.behavior = 4;
+            this.finishTrip();
+        }}
 
+    }
+
+    @Override
+    public void die(){
+        super.die();
+        this.sI.passengerInTrip = false; // passenger is dead
+        // so the passenger is not in the trip
     }
 
     @Override
     public void render(){
         super.render();
-        this.estimateCostText.drawWithDouble(this.estimateCost);
-        this.priorityText.drawWithInt(this.priority);
+
+        // before the passenger get on the taxi
+        //  the passenger will show the priority and the estimate cost
+        if (this.behavior <= 1){
+            this.estimateCostText.drawWithDouble(this.estimateCost);
+            this.priorityText.drawWithInt(this.priority);
+        }
     }
 
 }

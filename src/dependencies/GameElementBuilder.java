@@ -4,6 +4,7 @@ import components.car.EnemyCar;
 import components.car.OtherCar;
 import components.car.Taxi;
 import components.item.Coin;
+import components.item.InvinciblePower;
 import components.person.Driver;
 import components.person.Passenger;
 import engine.Element;
@@ -70,11 +71,20 @@ public class GameElementBuilder {
       this.coinBuilder(args.get(1), args.get(2));
 
     } else if (args.get(0).equals("PASSENGER")) {
-      this.passengerBuilder(args.get(1), args.get(2), args.get(3), args.get(4), args.get(5));
+      this.passengerBuilder(args.get(1), args.get(2), args.get(3), args.get(4), args.get(5), args.get(6));
       
     } else if (args.get(0).equals("DRIVER")) {
       this.driverBuilder(args.get(1), args.get(2));
+
+    } else if (args.get(0).equals("INVINCIBLE_POWER")){
+      this.invinciblePowerBuilder(args.get(1), args.get(2));
     }
+  }
+  private void invinciblePowerBuilder(String x, String y) {
+    InvinciblePower power = new InvinciblePower(
+            Double.parseDouble(x),
+            this.distance + Double.parseDouble(y));
+    this.trackedElement.deferAddSubElement(power);
   }
 
   private void enemyBuilder() {
@@ -103,11 +113,12 @@ public class GameElementBuilder {
     }
   }
 
+
   private void otherCarBuilder() {
     // gnerate new taxi via random location
     Random random = new Random();
 
-    if (((random.nextInt(1000) + 1) % 50) == 0) {
+    if (((random.nextInt(1000) + 1) % 200) == 0) {
       int new_y = random.nextInt(2);
       if (new_y == 0) {
         new_y = -50;
@@ -150,13 +161,14 @@ public class GameElementBuilder {
     this.trackedElement.deferAddSubElement(driver);
   }
 
-  private void passengerBuilder(String x, String y, String piority, String endx, String highy) {
+  private void passengerBuilder(String x, String y, String piority, String endx, String highy, String umbrella) {
     Passenger passenger = new Passenger(
         Integer.parseInt(x),
         this.distance + Integer.parseInt(y),
         Integer.parseInt(piority),
         Integer.parseInt(endx),
-        this.distance - Integer.parseInt(highy) + Integer.parseInt(y));
+        this.distance - Integer.parseInt(highy) + Integer.parseInt(y),
+        Integer.parseInt(umbrella));
 
     this.trackedElement.deferAddSubElement(passenger);
   }

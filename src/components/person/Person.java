@@ -7,10 +7,8 @@ import dependencies.Status;
 import engine.Loc;
 import engine.Locatable;
 import engine.Sprite;
-import engine.spread.SpreadNull;
 import engine.trigger.disTrigger.DisTrigger;
 import spread.GamePlaySpread;
-import triggers.AttackBothTrigger;
 import triggers.AttackTargetTrigger;
 import triggers.AttackerTrigger;
 
@@ -19,6 +17,7 @@ public class Person extends Sprite<GamePlaySpread, GamePlaySpread> implements At
     protected double health;
     protected double radius;
 
+    protected boolean invincible;
     protected int crushInvincibleTime;
     protected int freezTime;
     protected int freezMoveX;
@@ -44,7 +43,6 @@ public class Person extends Sprite<GamePlaySpread, GamePlaySpread> implements At
     @Override
     public void getHurts(double damage) {
         health -= damage;
-        this.getParentElement().deferAddSubElement(new Blood(this.loc.getX(), this.loc.getY()));
     }
 
     @Override
@@ -79,6 +77,12 @@ public class Person extends Sprite<GamePlaySpread, GamePlaySpread> implements At
     @Override
     public void update() {
 
+        if (this.sI.invinciblePowerFrame > 0){
+            this.invincible = true;
+        } else {
+            this.invincible = false;
+        }
+
         if (this.crushInvincibleTime > 0){
             this.crushInvincibleTime -= 1;
         }
@@ -96,8 +100,10 @@ public class Person extends Sprite<GamePlaySpread, GamePlaySpread> implements At
 
     @Override
     public void pairTriggerActive(Object obj) {
+
         if ((obj instanceof AttackerTrigger) && (this.visible)){
-            if (this.isCollision((DisTrigger) obj) && (this.crushInvincibleTime <= 0) && !(obj instanceof Taxi)){
+            if (this.isCollision((DisTrigger) obj) && (this.crushInvincibleTime <= 0)
+                    && !(obj instanceof Taxi) && !this.invincible){
                 this.intoFreez((Locatable) obj);
                 this.getHurts(((AttackerTrigger) obj).damageValue());
             }

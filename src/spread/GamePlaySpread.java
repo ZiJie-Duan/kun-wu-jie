@@ -2,6 +2,7 @@ package spread;
 
 import components.person.Passenger;
 import dependencies.Status;
+import engine.Loc;
 import engine.spread.Spread;
 
 public class GamePlaySpread implements Spread {
@@ -12,12 +13,18 @@ public class GamePlaySpread implements Spread {
   public int runningFrame = 0;
   public int driveDistance = 0;
 
-  private int priority;
-  private double estimateCost;
+  public int levelUpFrame = 0;
+  public boolean alreadyLevelUP = false;
+  public int invinciblePowerFrame = 0;
+
+  public int priority;
+  public double estimateCost;
 
   public double taxiHealth;
   public double driverHealth;
   public double passengerHealth;
+
+  public Loc driverLoc;
 
   // game runtime flags
   public boolean taxiMoveing = false;
@@ -28,5 +35,7 @@ public class GamePlaySpread implements Spread {
 
   // game shared argument
   public double gameGlobalSpeed = 5;
+
+  public boolean gameOver = false;
 
 }

@@ -1,4 +1,6 @@
 package components.car;
+import bagel.Input;
+import bagel.Keys;
 import components.effect.Fire;
 import components.effect.Smoke;
 import dependencies.Status;
@@ -23,6 +25,10 @@ public abstract class Car
   protected double radius;
   protected double damage;
 
+  protected boolean intoFreezFlag = false;
+  protected Locatable freezObj;
+
+  protected boolean invincible;
   protected int crushInvincibleTime;
   protected int freezTime;
   protected boolean freezMoveUp;
@@ -61,7 +67,7 @@ public abstract class Car
     this.speedY = minSpeedY + random.nextInt(maxSpeedY - minSpeedY + 1);
   }
 
-  protected void intoFreez(Locatable obj){
+  protected void freezBehavior(Locatable obj){
     this.crushInvincibleTime = Status.getSt().getInt("crush_invincible_time");
     this.freezTime = Status.getSt().getInt("freez_time");
 
@@ -72,11 +78,30 @@ public abstract class Car
     }
   }
 
+  protected void intoFreez(Locatable obj){
+    this.intoFreezFlag = true;
+    this.freezObj = obj;
+  }
+
+  @Override
+  public void ctrlIn(Input input){
+    if (input.isDown(Keys.UP) && this.sI.driverInTaxi){
+      this.moveY(this.sI.gameGlobalSpeed);
+    }
+  }
+
   @Override
   public void update() {
 
+    if (intoFreezFlag){
+      intoFreezFlag = false;
+      this.freezBehavior(this.freezObj);
+    }
+
     if (this.crushInvincibleTime > 0){
       this.crushInvincibleTime -= 1;
+    } else {
+      this.moveY(-this.speedY);
     }
 
     if (this.freezTime > 0) {
@@ -86,8 +111,6 @@ public abstract class Car
       } else {
         this.moveY(1);
       }
-    } else {
-      this.moveY(-this.speedY);
     }
 
     if (this.health <= 0) {
@@ -121,9 +144,9 @@ public abstract class Car
   @Override
   public void pairTriggerActive(Object obj) {
 
-    if (obj instanceof AttackerTrigger && (obj != this)){
+    if (this.isCollision((DisTrigger) obj) && obj instanceof AttackerTrigger && (obj != this)) {
 
-      if (this.isCollision((DisTrigger) obj) && (this.crushInvincibleTime <= 0)){
+      if ((this.crushInvincibleTime <= 0) && !this.invincible){
 
         if (obj instanceof Car){
           if (!((Car)obj).inCrushInvincibleTime()){
@@ -136,5 +159,6 @@ public abstract class Car
         }
       }
     }
-  }
+    }
+
 }
