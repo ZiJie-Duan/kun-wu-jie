@@ -1,7 +1,11 @@
 package components.item;
 
+import components.car.Taxi;
 import components.effect.Effect;
+import components.person.Driver;
 import dependencies.Status;
+import engine.Locatable;
+import engine.trigger.disTrigger.DisTrigger;
 
 public class InvinciblePower extends Item {
 
@@ -21,6 +25,14 @@ public class InvinciblePower extends Item {
 
     @Override
     public void pairTriggerActive(Object obj) {
+        if (this.isCollision((DisTrigger)obj)){
+            if (obj instanceof Taxi){
+                this.suicide();
+            }
+            if (obj instanceof Driver){
+                this.suicide();
+            }
+        }
 
     }
 

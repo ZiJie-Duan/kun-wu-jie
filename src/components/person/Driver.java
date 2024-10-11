@@ -4,6 +4,8 @@ import bagel.Input;
 import bagel.Keys;
 import components.car.Taxi;
 import components.effect.Blood;
+import components.item.Coin;
+import components.item.InvinciblePower;
 import dependencies.Status;
 import engine.trigger.disTrigger.DisTrigger;
 import triggers.AttackBothTrigger;
@@ -68,6 +70,8 @@ public class Driver extends Person {
   public void update() {
     super.update();
 
+    this.sI.driverLoc = this.loc;
+
     // if driver is not in taxi and not already pop out
     if (!this.sI.driverInTaxi && !alreadyPopOut) {
       this.driverPopOut();
@@ -93,6 +97,17 @@ public class Driver extends Person {
       // get on taxi
       if (this.loc.distanceWith(((Taxi) obj).getLoc()) < this.taxiGetInRadius) {
         this.driverGetOnTaxi();
+      }
+    }
+
+    if (this.isCollision((DisTrigger) obj)){
+      if (obj instanceof Coin){
+        if (this.sI.levelUpFrame <= 0){
+          this.sI.levelUpFrame = 500;
+          this.sI.alreadyLevelUP = false;
+        }
+      } else if (obj instanceof InvinciblePower){
+        this.sI.invinciblePowerFrame = 1000;
       }
     }
   }

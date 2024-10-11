@@ -1,6 +1,9 @@
 package components.item;
 
+import components.car.Taxi;
+import components.person.Driver;
 import dependencies.Status;
+import engine.trigger.disTrigger.DisTrigger;
 
 public class Coin extends Item {
 
@@ -16,6 +19,14 @@ public class Coin extends Item {
 
   @Override
   public void pairTriggerActive(Object obj) {
+    if (this.isCollision((DisTrigger) obj)){
+      if (obj instanceof Taxi){
+        this.suicide();
+      }
+      if (obj instanceof Driver){
+        this.suicide();
+      }
+    }
   }
 
   @Override

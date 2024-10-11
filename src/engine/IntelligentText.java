@@ -56,7 +56,7 @@ public class IntelligentText extends FormatedText {
   }
 
   public void drawWithDouble(Double num) {
-    this.text = this.prefix + String.valueOf(num);
+    this.text = this.prefix + String.format("%.2f", num);
     this.draw();
   }
 }
