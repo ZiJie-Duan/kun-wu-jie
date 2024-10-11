@@ -49,7 +49,7 @@ public class Person extends Sprite<GamePlaySpread, GamePlaySpread> implements At
     public double radius() {
         return radius;
     }
-
+    
     protected void intoFreez(Locatable obj){
         this.crushInvincibleTime = Status.getSt().getInt("crush_invincible_time");
         this.freezTime = Status.getSt().getInt("freez_time");

@@ -33,7 +33,7 @@ public abstract class Car
   protected int freezTime;
   protected boolean freezMoveUp;
 
-
+  /* Car base class */
   public Car(double x, double y, String imgPath) {
     super(GamePlaySpread.class, SpreadNull.class);
     Loc loc = new Loc(x, y);
@@ -54,6 +54,7 @@ public abstract class Car
     this.damage = damage;
   }
 
+
   public boolean inCrushInvincibleTime(){
     if (this.crushInvincibleTime > 0){
       return true;
@@ -67,6 +68,7 @@ public abstract class Car
     this.speedY = minSpeedY + random.nextInt(maxSpeedY - minSpeedY + 1);
   }
 
+  /* freeze just stop input movement, and keep still */
   protected void freezBehavior(Locatable obj){
     this.crushInvincibleTime = Status.getSt().getInt("crush_invincible_time");
     this.freezTime = Status.getSt().getInt("freez_time");

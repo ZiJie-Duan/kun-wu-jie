@@ -8,7 +8,7 @@ import dependencies.MiscUtils;
 import dependencies.General;
 import spread.GameMainSpread;
 
-/* Please check my README file .*/
+/* Palyer info for type name  */
 public class PlayerInfoPage extends Page<GameMainSpread, SpreadNull> {
   private final FormatedText command1;
   private final FormatedText command2;
@@ -81,6 +81,7 @@ public class PlayerInfoPage extends Page<GameMainSpread, SpreadNull> {
 
   @Override
   public void ctrlIn(Input input) {
+    // check if the player name is empty
     if (input.wasPressed(Keys.BACKSPACE) || input.wasPressed(Keys.DELETE)) {
       if (!this.sI.playerName.isEmpty()) {
         this.sI.playerName = this.sI.playerName.substring(0, this.sI.playerName.length() - 1);

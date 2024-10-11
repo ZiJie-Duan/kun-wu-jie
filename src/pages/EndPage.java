@@ -44,7 +44,7 @@ public class EndPage extends Page<GameMainSpread, SpreadNull> {
   }
 
   private List<List<String>> sortScore(String[][] gameScore) {
-    // sort the score and get the biggest 5
+    // sort the score 
     List<List<String>> scoreList = new ArrayList<List<String>>();
 
     for (int i =0; i < gameScore.length; i ++){
