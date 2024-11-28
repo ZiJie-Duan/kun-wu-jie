@@ -1,12 +1,14 @@
-# Update: Nov 28, 2024
+## Update: Nov 28, 2024
 
-# KunWuJIe is a custom development framework based on the Bagel game engine from the University of Melbourne. The following documentation is for an older version and is provided for reference only, as many code implementations have already changed.
+### KunWuJIe is a custom development framework based on the Bagel game engine from the University of Melbourne. The following documentation is for an older version and is provided for reference only, as many code implementations have already changed.
 
-# Update: Oct 11, 2024
+### One application of KunWuJie is the University of Melbourne's assignment, ShadowTaxi, which serves as a classic example of the KunWuJie framework.
+
+## Update: Oct 11, 2024
 
 I tried my best. I spent a lot of time on the engine package, and many of the concepts come from the game engine I created in Project 1. I iterated on it and introduced new abstractions, but I ran out of time. I'm not very satisfied with the specific implementation of the passenger and taxi related classes. The part I'm most proud of is the engine package.
 
-# Update: Sep 04, 2024
+## Update: Sep 04, 2024
 
 # Shadow Taxi Game and its Engine “Kun WuJie”
 
